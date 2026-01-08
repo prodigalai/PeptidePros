@@ -12,8 +12,8 @@ export function Newsletter() {
     const handleSubscribe = (e: React.FormEvent) => {
         e.preventDefault()
         if (email) {
-            toast.success("Welcome to the Circle", {
-                description: "You've successfully subscribed to our research updates."
+            toast.success("Protocol Authorized", {
+                description: "Your institutional email has been authorized for clinical updates."
             })
             setEmail("")
         }

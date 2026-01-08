@@ -90,45 +90,48 @@ export function BulkCalculator() {
                     </div>
 
                     {/* Results Card */}
-                    <div className="bg-foreground text-background p-8 md:p-10 rounded-[32px] shadow-2xl relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                            <TrendingUp className="h-24 w-24" />
+                    <div className="bg-foreground text-background p-8 md:p-10 rounded-[32px] shadow-2xl relative overflow-hidden group border border-white/10">
+                        <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+                            <TrendingUp className="h-40 w-40 rotate-12" />
                         </div>
 
                         <div className="relative z-10 space-y-8">
-                            <h3 className="text-xl font-medium opacity-80 border-b border-background/10 pb-4">Estimated Totals</h3>
+                            <div>
+                                <h3 className="text-[10px] font-bold opacity-40 uppercase tracking-[0.2em] mb-4">Allocation Summary</h3>
+                                <div className="h-px w-full bg-background/10" />
+                            </div>
 
                             <div className="space-y-6">
-                                <div className="flex justify-between items-center text-sm opacity-60">
-                                    <span>Regular Price</span>
+                                <div className="flex justify-between items-center text-xs font-medium opacity-50 uppercase tracking-widest">
+                                    <span>Baseline Quote</span>
                                     <span className="line-through">${totalOriginal.toFixed(2)}</span>
                                 </div>
 
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium opacity-60">Your Bulk Price</p>
-                                    <p className="text-5xl font-bold tracking-tight text-accent">${totalDiscounted.toFixed(2)}</p>
+                                <div className="space-y-2">
+                                    <p className="text-[10px] font-bold opacity-40 uppercase tracking-widest">Authorized Bulk Rate</p>
+                                    <p className="text-6xl font-serif font-light tracking-tighter text-accent">${totalDiscounted.toFixed(2)}</p>
                                 </div>
 
-                                <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-                                    <p className="text-sm opacity-60 mb-1 font-medium">Total Savings</p>
-                                    <p className="text-2xl font-bold text-emerald-400">+ ${savings.toFixed(2)}</p>
+                                <div className="p-6 bg-accent/10 rounded-[24px] border border-accent/20">
+                                    <p className="text-[10px] font-bold text-accent uppercase tracking-widest mb-1">Institutional Savings</p>
+                                    <p className="text-3xl font-serif font-light text-emerald-400">+ ${savings.toFixed(2)}</p>
                                 </div>
                             </div>
 
-                            <div className="space-y-4 pt-4">
-                                <div className="flex items-center gap-2 text-sm opacity-80 font-medium">
+                            <div className="space-y-4 pt-4 border-t border-background/10">
+                                <div className="flex items-center gap-3 text-[10px] opacity-70 font-bold uppercase tracking-widest">
                                     <CheckCircle2 className="h-4 w-4 text-accent" />
-                                    Free Global Priority Shipping
+                                    Priority Logistics Included
                                 </div>
-                                <div className="flex items-center gap-2 text-sm opacity-80 font-medium">
+                                <div className="flex items-center gap-3 text-[10px] opacity-70 font-bold uppercase tracking-widest">
                                     <CheckCircle2 className="h-4 w-4 text-accent" />
-                                    Dedicated Account Manager
+                                    Batch Reservation Lock
                                 </div>
                             </div>
 
-                            <button className="w-full h-14 bg-accent text-accent-foreground rounded-2xl font-bold text-lg inline-flex items-center justify-center gap-2 hover:bg-accent/90 transition-all active:scale-95 group">
-                                Lock in this Price
-                                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            <button className="w-full h-16 bg-accent text-accent-foreground rounded-2xl font-bold uppercase tracking-widest text-xs inline-flex items-center justify-center gap-3 hover:bg-accent/90 transition-all active:scale-95 group shadow-xl shadow-accent/20">
+                                Authorize This Rate
+                                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                             </button>
                         </div>
                     </div>
