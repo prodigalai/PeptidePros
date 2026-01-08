@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Mail } from "lucide-react"
+import { Mail, Phone } from "lucide-react"
 
 export function Footer() {
   return (

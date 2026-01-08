@@ -31,6 +31,8 @@ export const metadata: Metadata = {
   },
 }
 
+import { Toaster } from "sonner"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,6 +44,7 @@ export default function RootLayout({
         <Suspense fallback={<div>Loading...</div>}>
           {children}
           <Analytics />
+          <Toaster position="top-right" theme="dark" closeButton richColors />
         </Suspense>
       </body>
     </html>

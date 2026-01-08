@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Minus, Plus, X, ShoppingBag, ShieldCheck, Truck, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useCart } from "@/lib/cart"
+import { toast } from "sonner"
 
 export function CartContent() {
   const { items, removeItem, updateQuantity } = useCart()
@@ -62,7 +63,12 @@ export function CartContent() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => removeItem(item.product.id)}
+                      onClick={() => {
+                        removeItem(item.product.id)
+                        toast.error("Compound Dismissed", {
+                          description: `${item.product.name} has been removed from your repository.`
+                        })
+                      }}
                       className="h-9 w-9 rounded-full hover:bg-destructive/10 hover:text-destructive group-hover:bg-background transition-colors"
                     >
                       <X className="h-4 w-4" />
@@ -79,7 +85,12 @@ export function CartContent() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                      onClick={() => {
+                        updateQuantity(item.product.id, item.quantity - 1)
+                        toast.info("Inventory Updated", {
+                          description: `Decreased allocation of ${item.product.name}.`
+                        })
+                      }}
                       className="h-8 w-8 rounded-lg hover:bg-muted"
                       disabled={item.quantity <= 1}
                     >
@@ -89,7 +100,12 @@ export function CartContent() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                      onClick={() => {
+                        updateQuantity(item.product.id, item.quantity + 1)
+                        toast.success("Inventory Updated", {
+                          description: `Increased allocation of ${item.product.name}.`
+                        })
+                      }}
                       className="h-8 w-8 rounded-lg hover:bg-muted"
                     >
                       <Plus className="h-3 w-3" />
