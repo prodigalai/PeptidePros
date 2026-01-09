@@ -9,7 +9,7 @@ export default function ContactPage() {
     <div className="min-h-screen">
       <Navigation />
 
-      <main className="pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+      <main className="pt-44 pb-44 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h1 className="font-serif text-5xl md:text-6xl font-light text-foreground mb-4">Get in Touch</h1>

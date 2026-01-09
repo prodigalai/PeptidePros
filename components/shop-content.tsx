@@ -19,7 +19,7 @@ export function ShopContent() {
   return (
     <>
       {/* Hero Banner */}
-      <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-primary/10 via-background to-background">
+      <section className="relative pt-42 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-primary/10 via-background to-background">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="font-serif text-5xl md:text-6xl font-light text-foreground mb-4 text-balance">

@@ -119,7 +119,7 @@ export default function CheckoutPage() {
               ].map((s, i) => (
                 <div key={s.id} className="relative z-10 flex flex-col items-center gap-3">
                   <div className={`h-12 w-12 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${step === s.id ? "bg-accent border-accent text-accent-foreground shadow-lg shadow-accent/20" :
-                      (i < ["details", "payment", "review"].indexOf(step)) ? "bg-emerald-500 border-emerald-500 text-white" : "bg-background border-border text-muted-foreground"
+                    (i < ["details", "payment", "review"].indexOf(step)) ? "bg-emerald-500 border-emerald-500 text-white" : "bg-background border-border text-muted-foreground"
                     }`}>
                     {(i < ["details", "payment", "review"].indexOf(step)) ? <CheckCircle2 className="h-6 w-6" /> : <s.icon className="h-5 w-5" />}
                   </div>
@@ -249,7 +249,7 @@ export default function CheckoutPage() {
                 {items.map((item) => (
                   <div key={item.product.id} className="flex gap-4 group">
                     <div className="h-12 w-12 rounded-xl bg-muted overflow-hidden flex-shrink-0 border border-border/50">
-                      <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+                      <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" loading="lazy" />
                     </div>
                     <div className="flex-1 space-y-0.5">
                       <p className="text-[13px] font-medium leading-tight">{item.product.name}</p>

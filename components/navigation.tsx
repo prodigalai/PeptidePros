@@ -26,7 +26,7 @@ export function Navigation() {
   const isActive = (path: string) => pathname === path
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0  left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       {/* Top Banner */}
       <div className="bg-primary/10 border-b border-border hidden sm:block">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between text-xs text-foreground/70">
@@ -74,8 +74,9 @@ export function Navigation() {
               <span className="hidden md:inline text-foreground/70 hover:text-foreground">Support</span>
             </Link>
             <Link href="/profile?tab=orders" className="hidden sm:block">
-              <Button variant="ghost" size="icon" title="My Orders" className={isActive("/profile?tab=orders") ? "text-accent" : ""}>
-                <Package className="h-5 w-5" />
+              <Button variant="ghost" className={`gap-2 ${isActive("/profile?tab=orders") ? "text-accent bg-accent/5 border border-accent/20" : "text-foreground/70"}`}>
+                <Package className="h-4 w-4" />
+                <span className="text-xs font-bold uppercase tracking-wider hidden lg:inline">Orders</span>
               </Button>
             </Link>
 
@@ -85,28 +86,28 @@ export function Navigation() {
                 <Link href="/profile">
                   <Button variant="ghost" className={`gap-2 h-10 px-3 rounded-xl hover:bg-muted ${isActive("/profile") ? "bg-accent/10 border border-accent/20" : ""}`}>
                     <div className="h-6 w-6 rounded-full overflow-hidden border border-border">
-                      <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                      <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" loading="lazy" />
                     </div>
                     <span className="text-xs font-bold text-foreground tracking-tight hidden lg:inline">{user.name}</span>
                   </Button>
                 </Link>
                 <Button
                   variant="ghost"
-                  size="icon"
                   onClick={() => {
                     logout()
                     toast.success("Signed out successfully")
                   }}
-                  title="Logout"
-                  className="h-10 w-10 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                  className="h-10 px-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10 gap-2"
                 >
-                  <LogOut className="h-5 w-5" />
+                  <LogOut className="h-4 w-4" />
+                  <span className="text-xs font-bold uppercase tracking-wider hidden lg:inline">Logout</span>
                 </Button>
               </div>
             ) : (
               <Link href="/login" className="hidden sm:block">
-                <Button variant="ghost" size="icon" title="Login" className={isActive("/login") ? "text-accent" : ""}>
-                  <LogIn className="h-5 w-5" />
+                <Button variant="ghost" className={`gap-2 px-3 ${isActive("/login") ? "text-accent bg-accent/5 border border-accent/20" : "text-foreground/70"}`}>
+                  <LogIn className="h-4 w-4" />
+                  <span className="text-xs font-bold uppercase tracking-wider hidden lg:inline">Login</span>
                 </Button>
               </Link>
             )}
@@ -114,13 +115,12 @@ export function Navigation() {
             <Link href="/cart">
               <Button
                 variant="ghost"
-                size="icon"
-                className={`relative ${isActive("/cart") ? "text-accent" : ""}`}
-                title="Shopping Cart"
+                className={`relative gap-2 px-3 ${isActive("/cart") ? "text-accent bg-accent/5 border border-accent/20" : "text-foreground/70"}`}
               >
-                <ShoppingBag className="h-5 w-5" />
+                <ShoppingBag className="h-4 w-4" />
+                <span className="text-xs font-bold uppercase tracking-wider hidden lg:inline">Cart</span>
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-accent text-accent-foreground text-xs flex items-center justify-center font-medium">
+                  <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-accent text-accent-foreground text-[10px] flex items-center justify-center font-bold">
                     {cartCount}
                   </span>
                 )}

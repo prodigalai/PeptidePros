@@ -85,6 +85,7 @@ export function LookbookGallery() {
                 src={item.image || "/placeholder.svg"}
                 alt={item.title}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-background">
@@ -120,6 +121,7 @@ export function LookbookGallery() {
                   src={selectedLook.image || "/placeholder.svg"}
                   alt={selectedLook.title}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
 

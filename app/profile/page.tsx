@@ -411,7 +411,7 @@ function ProfileContent() {
         <div className="min-h-screen bg-background">
             <Navigation />
 
-            <main className="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <main className="pt-32 pb-34 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
                     {/* Sidebar */}
@@ -422,6 +422,7 @@ function ProfileContent() {
                                     src={user.avatar}
                                     alt={user.name}
                                     className="w-full h-full object-cover rounded-full"
+                                    loading="lazy"
                                 />
                             </div>
                             <div className="space-y-1">
@@ -456,8 +457,8 @@ function ProfileContent() {
                                     key={i}
                                     onClick={() => setActiveTab(item.id)}
                                     className={`flex flex-shrink-0 items-center gap-3 px-5 py-3.5 rounded-2xl text-[13px] font-bold tracking-tight transition-all duration-300 ${activeTab === item.id
-                                            ? "bg-accent text-accent-foreground shadow-[0_8px_20px_rgba(var(--accent),0.25)] scale-105"
-                                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                                        ? "bg-accent text-accent-foreground shadow-[0_8px_20px_rgba(var(--accent),0.25)] scale-105"
+                                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
                                         }`}
                                 >
                                     <item.icon className={`h-4.5 w-4.5 ${activeTab === item.id ? "text-white" : "text-muted-foreground"}`} />

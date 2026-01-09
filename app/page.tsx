@@ -11,68 +11,79 @@ export default function HomePage() {
       <Navigation />
 
       {/* Hero Section with Enhanced Image */}
-      <section className="relative pt-24 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-background">
+      <section className="relative pt-44 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-background">
         <div className="relative z-10 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Content */}
             <div className="flex flex-col justify-center order-2 lg:order-1">
-              <div className="inline-flex items-center gap-2 mb-6 w-fit px-4 py-2 bg-accent/10 rounded-full border border-accent/20">
+              <div className="inline-flex items-center gap-2 mb-8 w-fit px-4 py-2 bg-accent/10 rounded-full border border-accent/20 backdrop-blur-sm">
                 <Zap className="h-4 w-4 text-accent" />
-                <p className="text-accent text-sm font-medium tracking-wide">Premium Research Grade</p>
+                <p className="text-accent text-[10px] font-bold uppercase tracking-[0.2em]">Premium Research Grade</p>
               </div>
-              <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-light text-foreground mb-6 text-balance leading-tight">
-                Research-Grade Excellence
+              <h1 className="font-serif text-5xl md:text-6xl lg:text-8xl font-light text-foreground mb-8 text-balance leading-[1.1]">
+                Research-Grade <span className="text-accent italic">Excellence</span>
               </h1>
               <p className="text-lg md:text-xl text-foreground/70 mb-8 max-w-xl leading-relaxed">
                 Discover premium peptides, research compounds, and health supplements sourced from trusted laboratories.
                 Quality assured and professionally formulated for discerning researchers.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-5">
                 <Link href="/shop">
                   <Button
                     size="lg"
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base tracking-wider w-full sm:w-auto"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-7 text-xs font-bold uppercase tracking-[0.2em] w-full sm:w-auto rounded-2xl shadow-2xl shadow-primary/20 gap-3"
                   >
                     Shop Products
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
                 <Link href="/about">
                   <Button
                     variant="outline"
                     size="lg"
-                    className="px-8 py-6 text-base tracking-wider bg-transparent w-full sm:w-auto"
+                    className="px-10 py-7 text-xs font-bold uppercase tracking-[0.2em] border-border hover:bg-muted/50 w-full sm:w-auto rounded-2xl"
                   >
                     Learn More
                   </Button>
                 </Link>
               </div>
 
-              <div className="flex flex-wrap gap-6 mt-12 pt-8 border-t border-border">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="h-5 w-5 text-accent" />
-                  <span className="text-sm text-foreground/70">Quality Tested</span>
+              <div className="flex flex-wrap gap-10 mt-16 pt-10 border-t border-border/50">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-accent/5 rounded-lg border border-accent/10">
+                    <ShieldCheck className="h-5 w-5 text-accent" />
+                  </div>
+                  <span className="text-[10px] font-bold text-foreground/60 uppercase tracking-widest">Quality Tested</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Lock className="h-5 w-5 text-accent" />
-                  <span className="text-sm text-foreground/70">Secure Payments</span>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-accent/5 rounded-lg border border-accent/10">
+                    <Lock className="h-5 w-5 text-accent" />
+                  </div>
+                  <span className="text-[10px] font-bold text-foreground/60 uppercase tracking-widest">Secure Payments</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-accent" />
-                  <span className="text-sm text-foreground/70">Fast Delivery</span>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-accent/5 rounded-lg border border-accent/10">
+                    <Clock className="h-5 w-5 text-accent" />
+                  </div>
+                  <span className="text-[10px] font-bold text-foreground/60 uppercase tracking-widest">Fast Delivery</span>
                 </div>
               </div>
             </div>
 
             {/* Right Image */}
-            <div className="relative h-96 md:h-full min-h-96 order-1 lg:order-2 rounded-lg overflow-hidden shadow-2xl border border-border">
+            <div className="relative h-96 md:h-full min-h-96 order-1 lg:order-2 rounded-[32px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-border bg-muted/20">
               <img
-                src="/peptide-products-showcase.jpg"
+                src="/g1.png"
                 alt="Premium peptide products and research compounds"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
-              <div className="absolute top-4 right-4 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-medium">
+              <div className="absolute top-6 right-6 bg-accent/90 backdrop-blur-md text-accent-foreground px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl">
                 Industry Leader
+              </div>
+              <div className="absolute bottom-6 left-6 right-6 p-6 bg-background/60 backdrop-blur-md rounded-2xl border border-white/20 hidden md:block">
+                <p className="text-xs font-bold text-accent uppercase tracking-widest mb-1">Quality Guaranteed</p>
+                <p className="text-sm text-foreground/80 leading-relaxed">Multi-stage synthesis ensuring high purity standards for professional research.</p>
               </div>
             </div>
           </div>
@@ -177,21 +188,21 @@ export default function HomePage() {
                 name: "Research Compounds",
                 description: "Laboratory-certified pharmaceutical compounds",
                 href: "/shop?category=compounds",
-                image: "/img1.jpg",
+                image: "/Img1.jpg",
                 count: "180+",
               },
               {
                 name: "Health Supplements",
                 description: "Premium wellness and nutritional products",
                 href: "/shop?category=supplements",
-                image: "/img2.jpg",
+                image: "/Img2.jpg",
                 count: "320+",
               },
               {
                 name: "Medical Accessories",
                 description: "Professional-grade medical supplies",
                 href: "/shop?category=accessories",
-                image: "/img3.jpg",
+                image: "/Img3.jpg",
                 count: "150+",
               },
             ].map((category, idx) => (
@@ -201,6 +212,7 @@ export default function HomePage() {
                     src={category.image || "/placeholder.svg"}
                     alt={category.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-between p-6">
                     <div className="flex justify-between items-start">
@@ -324,6 +336,7 @@ export default function HomePage() {
                 src="/quality-assurance-lab-testing.jpg"
                 alt="Premium quality standards and certifications"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
               <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur px-4 py-3 rounded-lg border border-border">
                 <p className="text-xs font-bold text-accent mb-1">Quality Guaranteed</p>
@@ -408,6 +421,7 @@ export default function HomePage() {
                   src="/wholesale-lab.png"
                   alt="Laboratory Research"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent" />
                 <div className="absolute bottom-8 left-8 right-8 p-6 bg-background/80 backdrop-blur-md rounded-2xl border border-white/10">

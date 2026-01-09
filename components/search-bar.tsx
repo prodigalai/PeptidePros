@@ -11,12 +11,12 @@ export function SearchBar() {
 
   const filteredProducts = query
     ? products
-        .filter(
-          (p) =>
-            p.name.toLowerCase().includes(query.toLowerCase()) ||
-            p.description.toLowerCase().includes(query.toLowerCase()),
-        )
-        .slice(0, 8)
+      .filter(
+        (p) =>
+          p.name.toLowerCase().includes(query.toLowerCase()) ||
+          p.description.toLowerCase().includes(query.toLowerCase()),
+      )
+      .slice(0, 8)
     : []
 
   const handleClear = useCallback(() => {
@@ -62,6 +62,7 @@ export function SearchBar() {
                     src={product.image || "/placeholder.svg"}
                     alt={product.name}
                     className="h-10 w-10 rounded object-cover"
+                    loading="lazy"
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground truncate">{product.name}</p>

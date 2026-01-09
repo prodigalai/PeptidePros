@@ -71,6 +71,7 @@ export function WishlistContent() {
                 src={item.image || "/placeholder.svg"}
                 alt={item.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
               />
             </div>
           </Link>

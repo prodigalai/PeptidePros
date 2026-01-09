@@ -14,7 +14,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <main className="relative">
+      <main className="relative mt-24">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 left-0 w-full h-[1500px] bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
         <div className="absolute top-[10%] right-[-10%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
@@ -113,6 +113,7 @@ export default function AboutPage() {
                     src="/wholesale-lab.png"
                     alt="Scientist in Lab"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-accent/10 group-hover:bg-transparent transition-colors duration-500" />
                 </div>
@@ -205,15 +206,15 @@ export default function AboutPage() {
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-6">
                     <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 group">
-                      <img src="/quality-assurance-lab-testing.jpg" className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Lab Test" />
+                      <img src="/quality-assurance-lab-testing.jpg" className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Lab Test" loading="lazy" />
                     </div>
                     <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 group">
-                      <img src="/pharmaceutical-compound-liquid-research.jpg" className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Liquid Compound" />
+                      <img src="/pharmaceutical-compound-liquid-research.jpg" className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Liquid Compound" loading="lazy" />
                     </div>
                   </div>
                   <div className="space-y-6 pt-12">
                     <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 group">
-                      <img src="/customer-success-research-team.jpg" className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Research Team" />
+                      <img src="/customer-success-research-team.jpg" className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" alt="Research Team" loading="lazy" />
                     </div>
                     <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 [display:none] sm:block">
                       <div className="w-full h-full bg-accent/20 flex flex-col items-center justify-center text-center p-6">

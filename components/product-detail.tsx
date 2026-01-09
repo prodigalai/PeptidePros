@@ -75,6 +75,7 @@ export function ProductDetail({ productId }: { productId: string }) {
               src={product.image || "/placeholder.svg"}
               alt={product.name}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              loading="lazy"
             />
             <div className="absolute top-6 left-6 flex flex-col gap-3">
               <Badge className="bg-background/80 backdrop-blur-md text-foreground border-border/100 px-4 py-1.5 rounded-full font-bold text-[10px] tracking-widest uppercase">
