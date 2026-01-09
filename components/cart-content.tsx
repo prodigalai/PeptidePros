@@ -19,11 +19,11 @@ export function CartContent() {
         <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-muted mb-8">
           <ShoppingBag className="h-10 w-10 text-muted-foreground" />
         </div>
-        <h2 className="text-2xl font-serif font-light mb-4 text-foreground">Scientific Provisioning Empty</h2>
-        <p className="text-muted-foreground mb-10 max-w-sm mx-auto">Your research repository is currently empty. Secure your compounds for future analysis.</p>
+        <h2 className="text-2xl font-serif font-light mb-4 text-foreground">Shopping Cart Empty</h2>
+        <p className="text-muted-foreground mb-10 max-w-sm mx-auto">Your shopping cart is currently empty. Shop our collection of high-quality compounds.</p>
         <Link href="/shop">
           <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 px-10 rounded-full h-14 font-bold tracking-widest uppercase text-xs">
-            Begin Procurement
+            Start Shopping
           </Button>
         </Link>
       </div>
@@ -35,8 +35,8 @@ export function CartContent() {
       {/* List of Compounds */}
       <div className="lg:col-span-8 space-y-4">
         <div className="flex items-center justify-between pb-6 border-b border-border/50">
-          <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground">Provisioning List ({items.length})</h2>
-          <span className="text-[10px] font-bold text-accent px-3 py-1 bg-accent/10 rounded-full border border-accent/20">LAB VERIFIED SECURE</span>
+          <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground">Items ({items.length})</h2>
+          <span className="text-[10px] font-bold text-accent px-3 py-1 bg-accent/10 rounded-full border border-accent/20">SECURE CHECKOUT</span>
         </div>
 
         <div className="space-y-4 pt-4">
@@ -65,8 +65,8 @@ export function CartContent() {
                       size="icon"
                       onClick={() => {
                         removeItem(item.product.id)
-                        toast.error("Compound Dismissed", {
-                          description: `${item.product.name} has been removed from your repository.`
+                        toast.error("Item Removed", {
+                          description: `${item.product.name} has been removed from your cart.`
                         })
                       }}
                       className="h-9 w-9 rounded-full hover:bg-destructive/10 hover:text-destructive group-hover:bg-background transition-colors"
@@ -76,7 +76,7 @@ export function CartContent() {
                   </div>
                   <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
                     <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-                    <span>Purity Tested & Batch Verified</span>
+                    <span>Quality Guaranteed</span>
                   </div>
                 </div>
 
@@ -128,16 +128,16 @@ export function CartContent() {
 
           <div className="relative z-10">
             <h2 className="font-serif text-2xl font-light text-foreground mb-1">Order Summary</h2>
-            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Scientific Allocation Protocol</p>
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Order Summary</p>
           </div>
 
           <div className="space-y-4 relative z-10 pt-4 border-t border-border/50">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Research Inventory</span>
+              <span className="text-muted-foreground">Subtotal</span>
               <span className="text-foreground font-medium">${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Secure Logistics</span>
+              <span className="text-muted-foreground">Shipping</span>
               <span className="text-foreground font-medium">{shipping === 0 ? "Complimentary" : `$${shipping.toFixed(2)}`}</span>
             </div>
 
@@ -151,10 +151,10 @@ export function CartContent() {
             )}
 
             <div className="pt-6 border-t border-border flex justify-between items-baseline">
-              <span className="text-sm font-bold uppercase tracking-widest text-foreground">Total Allocation</span>
+              <span className="text-sm font-bold uppercase tracking-widest text-foreground">Total</span>
               <div className="text-right">
                 <span className="font-serif text-4xl font-light text-foreground">${total.toFixed(2)}</span>
-                <p className="text-[10px] text-muted-foreground mt-1">Authorized VAT inclusive</p>
+                <p className="text-[10px] text-muted-foreground mt-1">Tax included</p>
               </div>
             </div>
           </div>
@@ -168,7 +168,7 @@ export function CartContent() {
 
             <Link href="/shop">
               <Button variant="ghost" className="w-full text-muted-foreground hover:text-foreground hover:bg-muted/50 h-12 rounded-xl text-xs font-bold uppercase tracking-[0.15em]">
-                Modify Inventory
+                Continue Shopping
               </Button>
             </Link>
           </div>

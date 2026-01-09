@@ -14,7 +14,7 @@ export default function FAQPage() {
       items: [
         {
           q: "Are your products laboratory tested?",
-          a: "Every batch undergoes rigorous third-party HPLC/MS analysis, purity verification, and sterility testing at independent ISO-certified facilities.",
+          a: "Every batch undergoes rigorous quality analysis, purity verification, and testing at independent facilities.",
         },
         {
           q: "What purity levels are guaranteed?",
@@ -28,7 +28,7 @@ export default function FAQPage() {
       items: [
         {
           q: "How discreet is the shipping process?",
-          a: "All shipments are dispatched in professional, nondescript clinical packaging. Zero external branding or compound names are visible to ensure research privacy.",
+          a: "All shipments are dispatched in professional, nondescript packaging. Zero external branding or compound names are visible to ensure privacy.",
         },
         {
           q: "What are the priority shipping timelines?",
@@ -120,13 +120,10 @@ export default function FAQPage() {
             </div>
             <div className="relative z-10 space-y-6">
               <h3 className="font-serif text-4xl font-light">Further Technical Inquiries?</h3>
-              <p className="max-w-xl mx-auto text-accent-foreground/80 font-medium">Our clinical support specialists are available 24/7 to provide detailed compound specifications and logistics assistance.</p>
+              <p className="max-w-xl mx-auto text-accent-foreground/80 font-medium">Our support specialists are available 24/7 to provide detailed compound specifications and logistics assistance.</p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button variant="outline" className="bg-white/10 border-white/20 hover:bg-white/20 text-white rounded-full h-14 px-10 font-bold uppercase tracking-widest text-[10px]" asChild>
                   <a href="/contact">Direct Inquiry</a>
-                </Button>
-                <Button variant="secondary" className="bg-white text-accent hover:bg-white/90 rounded-full h-14 px-10 font-bold uppercase tracking-widest text-[10px]">
-                  Call Support
                 </Button>
               </div>
             </div>

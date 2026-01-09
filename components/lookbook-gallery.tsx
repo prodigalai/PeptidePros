@@ -20,7 +20,7 @@ const lookbookItems = [
     id: 2,
     image: "/quality-assurance-lab-testing.jpg",
     title: "Analytical Verification",
-    description: "HPLC and Mass Spectrometry protocols ensuring every batch meets the minimum 99% purity threshold before dispatch.",
+    description: "Analytical protocols ensuring every batch meets our high purity standards before dispatch.",
     products: [
       { id: 2, name: "BPC 157 5mg", price: 47.25 },
       { id: 5, name: "Tirzepatide 5mg", price: 145.99 },
@@ -29,8 +29,8 @@ const lookbookItems = [
   {
     id: 3,
     image: "/peptide-products-showcase.jpg",
-    title: "Clinical Provisioning",
-    description: "Final quality checks and secure clinical packaging of research compounds for global distribution.",
+    title: "Professional Provisioning",
+    description: "Final quality checks and secure packaging of research compounds for global distribution.",
     products: [
       { id: 4, name: "CJC-1295 NO DAC 2mg", price: 43.25 },
       { id: 7, name: "Ipamorelin 2mg", price: 40.5 },
@@ -50,7 +50,7 @@ const lookbookItems = [
     id: 5,
     image: "/customer-success-research-team.jpg",
     title: "Technical Consultation",
-    description: "Our team of clinical specialists providing technical data and laboratory assistance to professional researchers.",
+    description: "Our team of specialists providing technical data and laboratory assistance to professional researchers.",
     products: [
       { id: 13, name: "Bacteriostatic Water 30ml", price: 14.5 },
       { id: 14, name: "Sterile Vials (Pack of 10)", price: 18.99 },

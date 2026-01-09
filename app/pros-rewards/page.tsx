@@ -19,7 +19,7 @@ export default function ProRewardsPage() {
           <div className="max-w-5xl mx-auto text-center space-y-8 relative z-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full border border-accent/20">
               <Award className="h-4 w-4 text-accent" />
-              <p className="text-accent text-[10px] font-bold uppercase tracking-[0.2em]">Scientific Excellence Program</p>
+              <p className="text-accent text-[10px] font-bold uppercase tracking-[0.2em]">Research Excellence Program</p>
             </div>
 
             <h1 className="font-serif text-6xl md:text-8xl font-light text-foreground tracking-tight leading-[0.95]">
@@ -27,7 +27,7 @@ export default function ProRewardsPage() {
             </h1>
 
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-medium">
-              An exclusive tier for established researchers. Access baseline 25% allocation grants, priority batch verification, and technical assistance.
+              An exclusive tier for established researchers. Access baseline 25% allocation grants, priority support, and technical assistance.
             </p>
 
             <div className="flex flex-wrap justify-center gap-6 pt-4">
@@ -55,14 +55,14 @@ export default function ProRewardsPage() {
               },
               {
                 icon: FlaskConical,
-                title: "Priority CoAs",
-                desc: "Get initial access to new batch verification reports before they go public.",
+                title: "Priority Reports",
+                desc: "Get initial access to new quality reports before they go public.",
                 tag: "EXCLUSIVE"
               },
               {
                 icon: Star,
                 title: "Research Points",
-                desc: "Earn 1.5x points on all orders. Redeem for complimentary lab supplies and shipping.",
+                desc: "Earn 1.5x points on all orders. Redeem for complimentary accessories and shipping.",
                 tag: "ENHANCED"
               }
             ].map((benefit, i) => (
@@ -87,7 +87,7 @@ export default function ProRewardsPage() {
 
           <div className="space-y-4">
             {[
-              { name: "Researcher", spend: "$0 - $1,000", perks: "Standard CoA access, 1x points", active: false },
+              { name: "Researcher", spend: "$0 - $1,000", perks: "Standard Report access, 1x points", active: false },
               { name: "Senior Fellow", spend: "$1,000 - $5,000", perks: "10% store credit, Priority Support", active: true },
               { name: "Principal Investigator", spend: "$5,000+", perks: "25% Grant, Direct Rep access, Free Shipping", active: false }
             ].map((tier, i) => (

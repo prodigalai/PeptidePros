@@ -15,7 +15,7 @@ export default function LookbookPage() {
           </div>
           <h1 className="font-serif text-5xl md:text-7xl font-light text-foreground tracking-tight">Environmental <span className="text-accent italic">Showcase</span></h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed font-medium">
-            Explore the clinical environments and advanced laboratory protocols that define our scientific excellence.
+            Explore the professional laboratory environments and advanced research protocols that define our excellence.
           </p>
         </div>
 

@@ -13,7 +13,7 @@ export function Newsletter() {
         e.preventDefault()
         if (email) {
             toast.success("Protocol Authorized", {
-                description: "Your institutional email has been authorized for clinical updates."
+                description: "Your institutional email has been authorized for research updates."
             })
             setEmail("")
         }

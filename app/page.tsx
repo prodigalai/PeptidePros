@@ -51,11 +51,11 @@ export default function HomePage() {
               <div className="flex flex-wrap gap-6 mt-12 pt-8 border-t border-border">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="h-5 w-5 text-accent" />
-                  <span className="text-sm text-foreground/70">Lab Verified</span>
+                  <span className="text-sm text-foreground/70">Quality Tested</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Lock className="h-5 w-5 text-accent" />
-                  <span className="text-sm text-foreground/70">Secure Ordering</span>
+                  <span className="text-sm text-foreground/70">Secure Payments</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-accent" />
@@ -102,7 +102,7 @@ export default function HomePage() {
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl font-light text-foreground mb-4">Why Choose PeptidePros?</h2>
+            <h2 className="font-serif text-4xl md:text-5xl font-light text-foreground mb-4">Why Choose PeptideVault?</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed text-lg">
               We deliver uncompromising quality and expertise to researchers worldwide
             </p>
@@ -112,8 +112,8 @@ export default function HomePage() {
             {[
               {
                 icon: Award,
-                title: "Lab Certified",
-                description: "All products tested by professional laboratories with third-party verification",
+                title: "Quality First",
+                description: "All products undergo strict quality control to ensure they meet our high purity standards.",
               },
               {
                 icon: ShieldCheck,
@@ -170,28 +170,28 @@ export default function HomePage() {
                 name: "Peptides",
                 description: "Research-grade peptide compounds",
                 href: "/shop?category=peptides",
-                image: "/peptide-products-showcase.jpg",
+                image: "/g1.png",
                 count: "250+",
               },
               {
                 name: "Research Compounds",
                 description: "Laboratory-certified pharmaceutical compounds",
                 href: "/shop?category=compounds",
-                image: "/quality-assurance-lab-testing.jpg",
+                image: "/img1.jpg",
                 count: "180+",
               },
               {
                 name: "Health Supplements",
                 description: "Premium wellness and nutritional products",
                 href: "/shop?category=supplements",
-                image: "/customer-success-research-team.jpg",
+                image: "/img2.jpg",
                 count: "320+",
               },
               {
                 name: "Medical Accessories",
                 description: "Professional-grade medical supplies",
                 href: "/shop?category=accessories",
-                image: "/fast-secure-shipping.jpg",
+                image: "/img3.jpg",
                 count: "150+",
               },
             ].map((category, idx) => (
@@ -257,9 +257,9 @@ export default function HomePage() {
               },
               {
                 name: "Dr. Emily Rodriguez",
-                role: "Clinical Research Director",
+                role: "Senior Research Director",
                 content:
-                  "Fast shipping, pristine packaging, and authentic products. PeptidePros is my go-to supplier for all research needs.",
+                  "Fast shipping, pristine packaging, and authentic products. PeptideVault is my go-to supplier for all research needs.",
                 rating: 5,
               },
             ].map((testimonial, idx) => (
@@ -298,12 +298,12 @@ export default function HomePage() {
 
               <ul className="space-y-4 mb-8">
                 {[
-                  "Third-party lab testing and verification",
-                  "Batch-specific certificates of analysis",
-                  "ISO 9001 certified manufacturing",
-                  "Comprehensive product documentation",
-                  "Secure cold chain delivery",
-                  "Money-back guarantee",
+                  "Quality control and verification",
+                  "Consistent purity standards",
+                  "Professional manufacturing processes",
+                  "Full product documentation",
+                  "Secure delivery options",
+                  "Satisfaction guarantee",
                 ].map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
@@ -326,74 +326,9 @@ export default function HomePage() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur px-4 py-3 rounded-lg border border-border">
-                <p className="text-xs font-bold text-accent mb-1">ISO 9001</p>
-                <p className="text-xs text-foreground/70">Certified Quality</p>
+                <p className="text-xs font-bold text-accent mb-1">Quality Guaranteed</p>
+                <p className="text-xs text-foreground/70">Verified Content</p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Wholesale & Bulk Pricing Section with Image */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/10">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative h-96 md:h-full min-h-96 rounded-lg overflow-hidden shadow-2xl border border-border order-2 lg:order-1">
-              <img
-                src="/wholesale-bulk-pricing-showcase.jpg"
-                alt="Wholesale and bulk pricing warehouse"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute top-6 left-6 bg-accent text-accent-foreground px-6 py-3 rounded-lg border-2 border-accent-foreground/20">
-                <p className="text-2xl font-bold">Save</p>
-                <p className="text-sm font-medium">Up to 25%</p>
-              </div>
-            </div>
-
-            <div className="order-1 lg:order-2">
-              <h2 className="font-serif text-4xl md:text-5xl font-light text-foreground mb-6 leading-tight">
-                Wholesale & Bulk Discounts
-              </h2>
-              <p className="text-lg text-foreground/70 mb-8 leading-relaxed">
-                Order in bulk and receive significant discounts. Our wholesale program is designed for researchers,
-                clinics, and businesses looking for cost-effective solutions without compromising quality.
-              </p>
-
-              <div className="space-y-3 mb-8">
-                {[
-                  { range: "10 units", discount: "10% OFF", savings: "$50-150" },
-                  { range: "25 units", discount: "15% OFF", savings: "$200-500" },
-                  { range: "50 units", discount: "20% OFF", savings: "$600-1500" },
-                  { range: "100+ units", discount: "25% OFF", savings: "$2000+" },
-                ].map((tier, idx) => (
-                  <div
-                    key={idx}
-                    className="group p-4 bg-background border border-border rounded-lg hover:border-accent hover:bg-accent/5 transition-all cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-foreground font-semibold group-hover:text-accent transition-colors">
-                        {tier.range}
-                      </span>
-                      <span className="text-accent font-bold text-lg">{tier.discount}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">{tier.savings} in savings</p>
-                  </div>
-                ))}
-              </div>
-
-              <Link href="/wholesale">
-                <Button
-                  size="lg"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base tracking-wider w-full sm:w-auto"
-                >
-                  Request Wholesale Quote
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-
-              <p className="text-xs text-muted-foreground mt-4">
-                ✓ Dedicated account manager • ✓ Custom pricing • ✓ Priority support
-              </p>
             </div>
           </div>
         </div>

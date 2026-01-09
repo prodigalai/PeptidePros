@@ -14,7 +14,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="font-serif text-2xl font-light text-foreground mb-4">Introduction</h2>
               <p>
-                PeptidePros ("we," "us," or "our") operates the website. This page informs you of our policies regarding
+                PeptideVault ("we," "us," or "our") operates the website. This page informs you of our policies regarding
                 the collection, use, and disclosure of personal data when you use our Service and the choices you have
                 associated with that data.
               </p>
@@ -27,10 +27,10 @@ export default function PrivacyPage() {
                 Service to you:
               </p>
               <ul className="list-disc pl-6 space-y-2 mt-4">
-                <li>Personal Data: Email address, name, phone number, address</li>
+                <li>Personal Data: Email address, name, address</li>
                 <li>Usage Data: Browser type, pages visited, time spent, referring URLs</li>
                 <li>Device Data: IP address, browser type, operating system</li>
-                <li>Payment Data: Processed securely through encrypted channels</li>
+                <li>Payment Data: Processed securely through encrypted channels via Razorpay</li>
               </ul>
             </section>
 
@@ -54,8 +54,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="font-serif text-2xl font-light text-foreground mb-4">Contact Us</h2>
               <p>
-                If you have any questions about this Privacy Policy, please contact us at info@peptidepros.net or call
-                +1 (888) 391-1312.
+                If you have any questions about this Privacy Policy, please contact us at info@peptidevault.club.
               </p>
             </section>
           </div>

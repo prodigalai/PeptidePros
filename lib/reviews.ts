@@ -8,7 +8,7 @@ export const reviews: Review[] = [
     userName: "Dr. James M.",
     rating: 5,
     title: "Exceptional purity and quality",
-    text: "I've been ordering from PeptidePros for over a year. The quality and purity of their peptides is consistently excellent. Fast shipping and discreet packaging. Highly recommended for serious researchers.",
+    text: "I've been ordering from PeptideVault for over a year. The quality and purity of their peptides is consistently excellent. Fast shipping and discreet packaging. Highly recommended for serious researchers.",
     createdAt: new Date("2024-01-10"),
   },
   {

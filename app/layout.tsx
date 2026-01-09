@@ -19,7 +19,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "PeptidePros - Premium Research-Grade Pharmaceutical Products",
+  title: "PeptideVault - Premium Research-Grade Pharmaceutical Products",
   description:
     "Discover premium peptides, research compounds, and medical supplements from trusted laboratory sources. Professional-grade products for researchers and healthcare practitioners worldwide.",
   generator: "v0.app",

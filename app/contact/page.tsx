@@ -2,7 +2,7 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Mail, Phone, Clock } from "lucide-react"
+import { Mail, Clock } from "lucide-react"
 
 export default function ContactPage() {
   return (
@@ -23,22 +23,11 @@ export default function ContactPage() {
             <div className="space-y-8">
               <div className="flex gap-4">
                 <div className="flex-shrink-0">
-                  <Phone className="h-6 w-6 text-accent mt-1" />
-                </div>
-                <div>
-                  <h3 className="font-medium text-foreground mb-2">Phone</h3>
-                  <p className="text-muted-foreground">+1 (888) 391-1312</p>
-                  <p className="text-xs text-muted-foreground mt-1">Mon-Fri, 9am-6pm EST</p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex-shrink-0">
                   <Mail className="h-6 w-6 text-accent mt-1" />
                 </div>
                 <div>
                   <h3 className="font-medium text-foreground mb-2">Email</h3>
-                  <p className="text-muted-foreground">info@peptidepros.net</p>
+                  <p className="text-muted-foreground">info@peptidevault.club</p>
                   <p className="text-xs text-muted-foreground mt-1">Response within 24 hours</p>
                 </div>
               </div>

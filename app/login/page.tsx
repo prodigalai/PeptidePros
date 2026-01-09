@@ -58,7 +58,7 @@ export default function LoginPage() {
         <div className="max-w-md mx-auto">
           <div className="text-center mb-12">
             <h1 className="font-serif text-4xl md:text-5xl font-light text-foreground mb-2">Welcome Back</h1>
-            <p className="text-muted-foreground">Sign in to your PeptidePros account</p>
+            <p className="text-muted-foreground">Sign in to your PeptideVault account</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6 bg-muted/30 border border-border rounded-2xl p-8 backdrop-blur-sm">

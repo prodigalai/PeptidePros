@@ -24,7 +24,7 @@ export function ProductDetail({ productId }: { productId: string }) {
         formula: "C₁₂H₂₀N₄O₄S₂",
         molecularWeight: "356.4 g/mol",
         cas: "135111-11-2",
-        purity: "99.1% by HPLC",
+        purity: "99% verified",
         appearance: "Lyophilized White Powder",
         storage: "-20°C Long-term",
         shelfLife: "24 Months"
@@ -81,7 +81,7 @@ export function ProductDetail({ productId }: { productId: string }) {
                 Batch: {product.sku?.split('-')[2] || 'V24-001'}
               </Badge>
               <Badge className="bg-accent text-accent-foreground px-4 py-1.5 rounded-full font-bold text-[10px] tracking-widest uppercase shadow-lg shadow-accent/20">
-                {product.inStock ? "Authorized for Dispatch" : "Out of Stock"}
+                {product.inStock ? "Available for Purchase" : "Out of Stock"}
               </Badge>
             </div>
           </div>
@@ -213,7 +213,7 @@ export function ProductDetail({ productId }: { productId: string }) {
             <AccordionItem value="shipping" className="border border-border rounded-[28px] px-8 bg-muted/5">
               <AccordionTrigger className="font-bold uppercase tracking-widest text-[10px] py-6 hover:no-underline">Logistics & Compliance</AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-8 font-medium">
-                Dispatched in vacuum-sealed, tamper-evident professional packaging. Zero external branding for institutional privacy. Real-time telemetry tracking provided upon authorization. Compliance with ISO 9001:2015 synthesis standards guaranteed.
+                Dispatched in vacuum-sealed, professional packaging. Standard tracking provided upon shipment. High quality synthesis standards guaranteed.
               </AccordionContent>
             </AccordionItem>
           </Accordion>

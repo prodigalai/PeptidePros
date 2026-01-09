@@ -5,8 +5,8 @@ import { Beaker, Shield, Users, Zap, Microscope, FlaskConical, Globe, Award, Che
 import Link from "next/link"
 
 export const metadata = {
-  title: "About Us | PeptidePros - Scientific Excellence",
-  description: "Learn about PeptidePros' commitment to pharmaceutical purity, laboratory excellence, and advancing scientific research.",
+  title: "About Us | PeptideVault - Scientific Excellence",
+  description: "Learn about PeptideVault' commitment to pharmaceutical purity, laboratory excellence, and advancing scientific research.",
 }
 
 export default function AboutPage() {
@@ -26,7 +26,7 @@ export default function AboutPage() {
             <div className="text-center space-y-8 mb-16">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full border border-accent/20">
                 <Microscope className="h-4 w-4 text-accent" />
-                <span className="text-accent text-xs font-bold tracking-widest uppercase">The Standard of Purity</span>
+                <span className="text-accent text-xs font-bold tracking-widest uppercase">High Purity Standard</span>
               </div>
 
               <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light text-foreground leading-tight tracking-tight">
@@ -35,14 +35,14 @@ export default function AboutPage() {
               </h1>
 
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
-                Advancing the frontiers of research with uncompromising pharmaceutical standards and laboratory-certified compounds.
+                Advancing the frontiers of research with high quality control and verified compounds.
               </p>
             </div>
 
             <div className="relative aspect-[21/9] rounded-[48px] overflow-hidden border border-border shadow-2xl group">
               <img
                 src="/hero-pharmaceutical-lab-research.jpg"
-                alt="PeptidePros Advanced Research Facility"
+                alt="PeptideVault Advanced Research Facility"
                 className="w-full h-full object-cover transform transition-transform duration-[2s] group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
@@ -55,10 +55,10 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
               {[
-                { value: "99%+", label: "Purity Standard" },
+                { value: "99%+", label: "Purity Focus" },
                 { value: "500+", label: "Institutions Served" },
-                { value: "100%", label: "Lab Verification" },
-                { value: "24/7", label: "Scientific Support" }
+                { value: "100%", label: "Quality Verified" },
+                { value: "24/7", label: "Professional Support" }
               ].map((stat, i) => (
                 <div key={i} className="space-y-1">
                   <p className="text-3xl md:text-4xl font-bold text-foreground font-serif tracking-tight">{stat.value}</p>
@@ -80,29 +80,29 @@ export default function AboutPage() {
                 </h2>
                 <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                   <p>
-                    Founded in a pursuit of clinical perfection, PeptidePros provides researchers with the high-fidelity tools necessary for breakthrough discoveries. We believe that scientific integrity starts with the smallest molecule.
+                    Founded in a pursuit of quality, PeptideVault provides researchers with the high-fidelity tools necessary for breakthrough discoveries. We believe that integrity starts with the smallest molecule.
                   </p>
                   <p>
-                    Every compound in our catalog is the result of rigorous pharmaceutical verification. We partner with ISO-certified laboratories to ensure that every mg delivered is exactly what your research requires.
+                    Every compound in our catalog is the result of rigorous verification. We work to ensure that every mg delivered is exactly what your research requires.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
                   <div className="flex items-center gap-3">
                     <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                    <span className="text-sm font-medium text-foreground">HPLC Verified Batches</span>
+                    <span className="text-sm font-medium text-foreground">Verified Batches</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                    <span className="text-sm font-medium text-foreground">Third-Party Verification</span>
+                    <span className="text-sm font-medium text-foreground">Quality Verification</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                    <span className="text-sm font-medium text-foreground">Secure Cold Chain Logistics</span>
+                    <span className="text-sm font-medium text-foreground">Secure Logistics</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                    <span className="text-sm font-medium text-foreground">ISO 9001 Compliance</span>
+                    <span className="text-sm font-medium text-foreground">Professional Compliance</span>
                   </div>
                 </div>
               </div>
@@ -141,8 +141,8 @@ export default function AboutPage() {
               {[
                 {
                   icon: Beaker,
-                  title: "Clinical Rigor",
-                  desc: "Every batch is subjected to multi-stage testing including HPLC and Mass Spectrometry to guarantee potency.",
+                  title: "Quality Rigor",
+                  desc: "Every batch is subjected to multi-stage testing to guarantee high purity levels.",
                   color: "bg-blue-500/10 text-blue-500"
                 },
                 {
@@ -196,11 +196,6 @@ export default function AboutPage() {
                     <Button size="lg" className="h-14 px-8 bg-accent text-accent-foreground hover:bg-accent/90 text-lg group">
                       Explore Catalog
                       <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                  <Link href="/wholesale">
-                    <Button variant="outline" size="lg" className="h-14 px-8 text-lg border-white/20 hover:bg-white/5 text-background">
-                      Wholesale Terms
                     </Button>
                   </Link>
                 </div>

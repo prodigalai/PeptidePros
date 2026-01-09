@@ -12,7 +12,6 @@ import { useAuth } from "@/lib/auth"
 const navLinks = [
   { href: "/shop", label: "Shop" },
   { href: "/about", label: "About" },
-  { href: "/wholesale", label: "Wholesale" },
   { href: "/contact", label: "Contact" },
   { href: "/faq", label: "FAQ" },
 ]
@@ -46,7 +45,7 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center">
-            <span className="font-serif text-xl md:text-2xl font-light tracking-wide text-foreground">PeptidePros</span>
+            <span className="font-serif text-xl md:text-2xl font-light tracking-wide text-foreground">PeptideVault</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -70,10 +69,10 @@ export function Navigation() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-2 md:gap-4">
-            <a href="tel:1-888-391-1312" className="hidden sm:flex items-center gap-2 px-3 py-2 text-sm">
+            <Link href="/contact" className="hidden sm:flex items-center gap-2 px-3 py-2 text-sm">
               <Headphones className="h-4 w-4 text-accent" />
-              <span className="hidden md:inline text-foreground/70 hover:text-foreground">1-888-391-1312</span>
-            </a>
+              <span className="hidden md:inline text-foreground/70 hover:text-foreground">Support</span>
+            </Link>
             <Link href="/profile?tab=orders" className="hidden sm:block">
               <Button variant="ghost" size="icon" title="My Orders" className={isActive("/profile?tab=orders") ? "text-accent" : ""}>
                 <Package className="h-5 w-5" />
