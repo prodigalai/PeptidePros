@@ -90,24 +90,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust & Stats Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-primary/5 border-y border-border">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { label: "Products", value: "1000+" },
-              { label: "Customers", value: "50K+" },
-              { label: "Countries", value: "150+" },
-              { label: "Years", value: "15+" },
-            ].map((stat, idx) => (
-              <div key={idx} className="text-center">
-                <p className="text-3xl md:text-4xl font-bold text-accent mb-2">{stat.value}</p>
-                <p className="text-sm text-foreground/70">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Why Choose Us Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-background">
