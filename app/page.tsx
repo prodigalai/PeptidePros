@@ -223,60 +223,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-background">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl font-light text-foreground mb-4">
-              Trusted by Researchers Worldwide
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed text-lg">
-              See what our customers say about our products and service
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Dr. Sarah Chen",
-                role: "Research Scientist, Harvard Medical",
-                content:
-                  "The quality of the peptides is exceptional. Every batch comes with comprehensive testing data and certificates. Highly professional.",
-                rating: 5,
-              },
-              {
-                name: "Prof. James Mitchell",
-                role: "Pharmaceutical Researcher",
-                content:
-                  "Consistently reliable products and excellent customer support. They understand the research community's needs perfectly.",
-                rating: 5,
-              },
-              {
-                name: "Dr. Emily Rodriguez",
-                role: "Senior Research Director",
-                content:
-                  "Fast shipping, pristine packaging, and authentic products. PeptideVault is my go-to supplier for all research needs.",
-                rating: 5,
-              },
-            ].map((testimonial, idx) => (
-              <div
-                key={idx}
-                className="p-8 border border-border rounded-lg bg-muted/30 hover:border-accent hover:bg-accent/5 transition-all duration-300 group"
-              >
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-accent text-accent" />
-                  ))}
-                </div>
-                <p className="text-foreground/80 mb-6 leading-relaxed italic">"{testimonial.content}"</p>
-                <div>
-                  <p className="font-medium text-foreground">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Quality Standards Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/5 via-background to-accent/5">

@@ -56,8 +56,8 @@ export default function AboutPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
               {[
                 { value: "99%+", label: "Purity Focus" },
-                { value: "500+", label: "Institutions Served" },
                 { value: "100%", label: "Quality Verified" },
+
                 { value: "24/7", label: "Professional Support" }
               ].map((stat, i) => (
                 <div key={i} className="space-y-1">

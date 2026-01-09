@@ -69,7 +69,7 @@ export function Navigation() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-2 md:gap-4">
-            <Link href="/contact" className="hidden sm:flex items-center gap-2 px-3 py-2 text-sm">
+            {/* <Link href="/contact" className="hidden sm:flex items-center gap-2 px-3 py-2 text-sm">
               <Headphones className="h-4 w-4 text-accent" />
               <span className="hidden md:inline text-foreground/70 hover:text-foreground">Support</span>
             </Link>
@@ -78,10 +78,10 @@ export function Navigation() {
                 <Package className="h-4 w-4" />
                 <span className="text-xs font-bold uppercase tracking-wider hidden lg:inline">Orders</span>
               </Button>
-            </Link>
+            </Link> */}
 
             {/* User Profile / Login */}
-            {isInitialized && isAuthenticated && user ? (
+            {/* {isInitialized && isAuthenticated && user ? (
               <div className="hidden sm:flex items-center gap-2">
                 <Link href="/profile">
                   <Button variant="ghost" className={`gap-2 h-10 px-3 rounded-xl hover:bg-muted ${isActive("/profile") ? "bg-accent/10 border border-accent/20" : ""}`}>
@@ -110,7 +110,7 @@ export function Navigation() {
                   <span className="text-xs font-bold uppercase tracking-wider hidden lg:inline">Login</span>
                 </Button>
               </Link>
-            )}
+            )} */}
 
             <Link href="/cart">
               <Button
