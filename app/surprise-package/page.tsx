@@ -29,7 +29,7 @@ export default function SurprisePackagePage() {
         focusArea: "",
         preferences: "",
         subscription: "one-time",
-        amount: "50",
+        amount: "500",
     })
     const [loading, setLoading] = useState(false)
 
@@ -90,39 +90,20 @@ export default function SurprisePackagePage() {
         <div className="min-h-screen bg-background">
             <Navigation />
 
-            <main className="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="text-center max-w-2xl mx-auto mb-12 space-y-4">
-                    <div className="inline-flex items-center justify-center p-3 bg-accent/10 rounded-full mb-4 animate-pulse">
-                        <Sparkles className="h-6 w-6 text-accent" />
+            <main className="pt-24 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
+                    <div className="inline-flex items-center justify-center p-2 bg-accent/10 rounded-full mb-2 animate-pulse">
+                        <Sparkles className="h-5 w-5 text-accent" />
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-serif font-light text-foreground tracking-tight">
+                    <h1 className="text-3xl md:text-5xl font-serif font-light text-foreground tracking-tight">
                         The Surprise Package
                     </h1>
-                    <p className="text-muted-foreground text-lg leading-relaxed max-w-xl mx-auto">
+                    <p className="text-muted-foreground text-base leading-relaxed max-w-xl mx-auto">
                         Tell us about yourself, and our algorithm will curate a premium selection of vitamins and supplements tailored specifically to your biology and goals.
                     </p>
                 </div>
 
-                {/* Sneak Peek Gallery */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 opacity-80 hover:opacity-100 transition-opacity duration-500">
-                    {[
-                        { src: "/g1.png", label: "Premium Complex" },
-                        { src: "/g3.png", label: "Vitality Boosters" },
-                        { src: "/g5.png", label: "Essential Oils" },
-                        { src: "/g7.png", label: "Recovery Agents" }
-                    ].map((item, i) => (
-                        <div key={i} className="relative group overflow-hidden rounded-2xl bg-muted/20 border border-border/50 aspect-square">
-                            <img
-                                src={item.src}
-                                alt={item.label}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                                <span className="text-white text-xs font-bold uppercase tracking-widest">{item.label}</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
@@ -130,10 +111,93 @@ export default function SurprisePackagePage() {
                     <div className="lg:col-span-7 space-y-8">
                         <form onSubmit={handleSubmit} className="space-y-8">
 
-                            {/* Personal Details */}
+                            {/* Investment Section */}
                             <div className="p-8 bg-card border border-border/50 rounded-[32px] space-y-6 shadow-sm">
                                 <h2 className="text-xl font-serif font-light text-foreground flex items-center gap-3">
                                     <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent text-sm font-bold">1</span>
+                                    Your Investment
+                                </h2>
+
+                                <div className="space-y-6">
+                                    <RadioGroup defaultValue="one-time" onValueChange={(val) => handleSelectChange("subscription", val)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <RadioGroupItem value="one-time" id="one-time" className="peer sr-only" />
+                                            <label
+                                                htmlFor="one-time"
+                                                className="flex flex-col items-center justify-between rounded-2xl border-2 border-muted bg-transparent p-4 hover:bg-accent/5 hover:text-accent-foreground peer-data-[state=checked]:border-accent peer-data-[state=checked]:bg-accent/5 [&:has([data-state=checked])]:border-accent cursor-pointer transition-all h-full"
+                                            >
+                                                <Gift className="mb-3 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-accent" />
+                                                <span className="text-sm font-bold uppercase tracking-wider">One-Time Surprise</span>
+                                                <span className="text-xs text-muted-foreground mt-1 text-center">Single curated box</span>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <RadioGroupItem value="recurring" id="recurring" className="peer sr-only" />
+                                            <label
+                                                htmlFor="recurring"
+                                                className="flex flex-col items-center justify-between rounded-2xl border-2 border-muted bg-transparent p-4 hover:bg-accent/5 hover:text-accent-foreground peer-data-[state=checked]:border-accent peer-data-[state=checked]:bg-accent/5 [&:has([data-state=checked])]:border-accent cursor-pointer transition-all h-full relative overflow-hidden"
+                                            >
+                                                <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-bold px-2 py-1 rounded-bl-xl uppercase tracking-wider">Save 10%</div>
+                                                <Zap className="mb-3 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-accent" />
+                                                <span className="text-sm font-bold uppercase tracking-wider">Monthly Refill</span>
+                                                <span className="text-xs text-muted-foreground mt-1 text-center">Auto-replenish your health</span>
+                                            </label>
+                                        </div>
+                                    </RadioGroup>
+
+                                    <div className="space-y-4 pt-4 border-t border-border/50">
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Set Your Budget</label>
+
+                                        <div className="grid grid-cols-4 gap-2 mb-2">
+                                            {["100", "500", "1000", "10000"].map((preset) => (
+                                                <Button
+                                                    key={preset}
+                                                    type="button"
+                                                    variant={formData.amount === preset ? "default" : "outline"}
+                                                    onClick={() => handleSelectChange("amount", preset)}
+                                                    className={`h-10 text-xs font-bold ${formData.amount === preset
+                                                        ? "bg-accent text-accent-foreground border-accent shadow-lg shadow-accent/20 scale-105"
+                                                        : "hover:bg-accent/10 hover:border-accent/50 text-muted-foreground"
+                                                        } transition-all duration-300`}
+                                                >
+                                                    ${preset}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-serif text-lg">$</span>
+                                            <Input
+                                                name="amount"
+                                                type="number"
+                                                min="5"
+                                                step="1"
+                                                value={formData.amount}
+                                                onChange={handleInputChange}
+                                                className="h-16 pl-8 text-3xl font-bold bg-background border-2 border-border/50 focus:border-accent text-black rounded-xl shadow-inner placeholder:text-muted-foreground/20"
+                                            />
+                                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-bold uppercase tracking-widest">USD</span>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground ml-1">Minimum $5. No upper limit. Higher budget allows for more premium compounds.</p>
+                                    </div>
+
+                                    <div className="mt-8 rounded-2xl overflow-hidden border border-border/50 relative group">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+                                        <img
+                                            src="/g11.png"
+                                            alt="Premium Selection"
+                                            className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-105"
+                                        />
+                                        <div className="absolute bottom-4 left-4 z-20">
+                                            <p className="text-white text-xs font-bold uppercase tracking-widest">Premium Collection</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Personal Details */}
+                            <div className="p-8 bg-card border border-border/50 rounded-[32px] space-y-6 shadow-sm">
+                                <h2 className="text-xl font-serif font-light text-foreground flex items-center gap-3">
+                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent text-sm font-bold">2</span>
                                     Biological Profile
                                 </h2>
 
@@ -206,77 +270,33 @@ export default function SurprisePackagePage() {
                                 </div>
                             </div>
 
-                            {/* Investment Section */}
-                            <div className="p-8 bg-card border border-border/50 rounded-[32px] space-y-6 shadow-sm">
-                                <h2 className="text-xl font-serif font-light text-foreground flex items-center gap-3">
-                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent text-sm font-bold">2</span>
-                                    Your Investment
-                                </h2>
-
-                                <div className="space-y-6">
-                                    <RadioGroup defaultValue="one-time" onValueChange={(val) => handleSelectChange("subscription", val)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <RadioGroupItem value="one-time" id="one-time" className="peer sr-only" />
-                                            <label
-                                                htmlFor="one-time"
-                                                className="flex flex-col items-center justify-between rounded-2xl border-2 border-muted bg-transparent p-4 hover:bg-accent/5 hover:text-accent-foreground peer-data-[state=checked]:border-accent peer-data-[state=checked]:bg-accent/5 [&:has([data-state=checked])]:border-accent cursor-pointer transition-all h-full"
-                                            >
-                                                <Gift className="mb-3 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-accent" />
-                                                <span className="text-sm font-bold uppercase tracking-wider">One-Time Surprise</span>
-                                                <span className="text-xs text-muted-foreground mt-1 text-center">Single curated box</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <RadioGroupItem value="recurring" id="recurring" className="peer sr-only" />
-                                            <label
-                                                htmlFor="recurring"
-                                                className="flex flex-col items-center justify-between rounded-2xl border-2 border-muted bg-transparent p-4 hover:bg-accent/5 hover:text-accent-foreground peer-data-[state=checked]:border-accent peer-data-[state=checked]:bg-accent/5 [&:has([data-state=checked])]:border-accent cursor-pointer transition-all h-full relative overflow-hidden"
-                                            >
-                                                <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-bold px-2 py-1 rounded-bl-xl uppercase tracking-wider">Save 10%</div>
-                                                <Zap className="mb-3 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-accent" />
-                                                <span className="text-sm font-bold uppercase tracking-wider">Monthly Refill</span>
-                                                <span className="text-xs text-muted-foreground mt-1 text-center">Auto-replenish your health</span>
-                                            </label>
-                                        </div>
-                                    </RadioGroup>
-
-                                    <div className="space-y-4 pt-4 border-t border-border/50">
-                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Set Your Budget</label>
-                                        <div className="relative">
-                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-serif text-lg">$</span>
-                                            <Input
-                                                name="amount"
-                                                type="number"
-                                                min="5"
-                                                step="1"
-                                                value={formData.amount}
-                                                onChange={handleInputChange}
-                                                className="h-16 pl-8 text-2xl font-serif rounded-xl bg-background border-border/50 focus:border-accent"
-                                            />
-                                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-bold uppercase tracking-widest">USD</span>
-                                        </div>
-                                        <p className="text-xs text-muted-foreground ml-1">Minimum $5. No upper limit. Higher budget allows for more premium compounds.</p>
-                                    </div>
-                                </div>
-                            </div>
-
                         </form>
                     </div>
 
                     {/* Checkout/Summary Section */}
                     <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32">
-                        <div className="p-8 bg-primary/5 border border-primary/10 rounded-[40px] space-y-8 backdrop-blur-sm relative overflow-hidden">
-                            <div className="absolute -top-24 -right-24 h-64 w-64 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
+                        <div className="p-8 bg-slate-900 border border-slate-800 rounded-[40px] space-y-8 relative overflow-hidden text-white shadow-2xl">
+                            {/* Decorative Background Elements */}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-accent/20 rounded-full blur-[100px] pointer-events-none" />
+                            <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-600/20 rounded-full blur-[80px] pointer-events-none" />
 
-                            <div>
-                                <h2 className="font-serif text-3xl font-light text-foreground mb-2">Package Summary</h2>
-                                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Ready for Curation</p>
+                            <div className="relative z-10">
+                                <div className="flex justify-between items-start mb-2">
+                                    <h2 className="font-serif text-3xl font-light text-white">Package Summary</h2>
+                                    <div className="bg-slate-800 p-2 rounded-full">
+                                        <ShieldCheck className="h-5 w-5 text-emerald-400" />
+                                    </div>
+                                </div>
+                                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                    Secure Transaction
+                                </p>
                             </div>
 
-                            <div className="space-y-4">
-                                <div className="flex justify-between items-center py-4 border-b border-border/50">
-                                    <span className="text-sm font-medium text-muted-foreground">Profile Status</span>
-                                    <span className="flex items-center gap-2 text-sm font-bold text-emerald-600">
+                            <div className="space-y-4 relative z-10">
+                                <div className="flex justify-between items-center py-4 border-b border-slate-700">
+                                    <span className="text-sm font-medium text-slate-400">Profile Status</span>
+                                    <span className="flex items-center gap-2 text-sm font-bold text-emerald-400">
                                         <CheckCircle2 className="h-4 w-4" />
                                         {formData.age && formData.gender && formData.focusArea ? "Complete" : "Incomplete"}
                                     </span>
@@ -284,34 +304,44 @@ export default function SurprisePackagePage() {
 
                                 <div className="space-y-2">
                                     <div className="flex justify-between text-sm">
-                                        <span className="text-muted-foreground">Base Curated Value</span>
-                                        <span className="font-bold">${parseInt(formData.amount || "0").toFixed(2)}</span>
+                                        <span className="text-slate-400">Base Curated Value</span>
+                                        <span className="font-bold text-white">${parseInt(formData.amount || "0").toFixed(2)}</span>
                                     </div>
                                     {formData.subscription === "recurring" && (
-                                        <div className="flex justify-between text-sm text-emerald-600">
+                                        <div className="flex justify-between text-sm text-emerald-400">
                                             <span>Subscription Benefit</span>
                                             <span className="font-bold">Priority Processing</span>
                                         </div>
                                     )}
                                 </div>
 
-                                <div className="pt-6 border-t border-border flex justify-between items-baseline">
-                                    <span className="text-sm font-bold uppercase tracking-[0.2em] text-foreground">Total Due</span>
-                                    <span className="text-4xl font-serif font-light text-foreground">${Math.max(5, parseInt(formData.amount || "0")).toFixed(2)}</span>
+                                <div className="pt-6 border-t border-slate-700 flex justify-between items-baseline">
+                                    <span className="text-sm font-bold uppercase tracking-[0.2em] text-slate-300">Total Due</span>
+                                    <span className="text-4xl font-serif font-light text-white">${Math.max(5, parseInt(formData.amount || "0")).toFixed(2)}</span>
                                 </div>
                             </div>
 
                             <Button
                                 onClick={handleSubmit}
-                                className="w-full bg-accent text-accent-foreground hover:bg-accent/90 h-16 rounded-2xl font-bold tracking-[0.2em] uppercase text-sm shadow-xl shadow-accent/20 transition-all hover:scale-[1.02]"
+                                className="relative w-full h-16 rounded-2xl font-bold tracking-[0.2em] uppercase text-sm overflow-hidden group transition-all hover:scale-[1.02] shadow-[0_0_40px_-10px_rgba(var(--accent),0.5)]"
                                 disabled={loading}
                             >
-                                {loading ? "Processing Securely..." : "Proceed to Checkout"}
+                                <div className="absolute inset-0 bg-gradient-to-r from-amber-200 via-accent to-amber-200 opacity-90 group-hover:opacity-100 transition-opacity" />
+                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+                                <span className="relative z-10 text-black flex items-center justify-center gap-2">
+                                    {loading ? "Processing Securely..." : (
+                                        <>
+                                            Proceed to Checkout
+                                            <ShieldCheck className="h-4 w-4" />
+                                        </>
+                                    )}
+                                </span>
                             </Button>
 
-                            <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground uppercase tracking-widest font-bold opacity-70">
-                                <ShieldCheck className="h-4 w-4" />
-                                Secure SSL Encrypted Payment
+                            <div className="flex items-center justify-center gap-4 text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+                                <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> 256-Bit SSL</span>
+                                <span className="h-3 w-px bg-slate-700" />
+                                <span>Money Back Guarantee</span>
                             </div>
                         </div>
 
