@@ -112,6 +112,17 @@ export function Navigation() {
               </Link>
             )} */}
 
+            {/* Surprise Package Button */}
+            <Link href="/surprise-package" className="hidden sm:block">
+              <Button
+                size="sm"
+                className="bg-green-600 hover:bg-green-700 text-white font-bold tracking-wider uppercase gap-2 shadow-[0_0_15px_rgba(22,163,74,0.5)] transition-all hover:scale-105"
+              >
+                <Package className="h-4 w-4" />
+                <span className="hidden lg:inline">Surprise Package</span>
+              </Button>
+            </Link>
+
             <Link href="/cart">
               <Button
                 variant="ghost"
