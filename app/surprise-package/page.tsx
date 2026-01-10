@@ -338,11 +338,7 @@ export default function SurprisePackagePage() {
                                 </span>
                             </Button>
 
-                            <div className="flex items-center justify-center gap-4 text-[10px] text-slate-500 uppercase tracking-widest font-bold">
-                                <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> 256-Bit SSL</span>
-                                <span className="h-3 w-px bg-slate-700" />
-                                <span>Money Back Guarantee</span>
-                            </div>
+
                         </div>
 
                         <div className="p-6 bg-card border border-border/50 rounded-3xl">
