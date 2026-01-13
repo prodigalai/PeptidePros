@@ -11,7 +11,9 @@ export function CartContent() {
 
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
   const shipping = subtotal > 150 ? 0 : 9.99
-  const total = subtotal + shipping
+  const tax = subtotal * 0.08
+  const platformFee = (subtotal + shipping + tax) * 0.15 // 15% platform fee
+  const total = subtotal + shipping + tax + platformFee
 
   if (items.length === 0) {
     return (
@@ -141,6 +143,14 @@ export function CartContent() {
               <span className="text-muted-foreground">Shipping</span>
               <span className="text-foreground font-medium">{shipping === 0 ? "Complimentary" : `$${shipping.toFixed(2)}`}</span>
             </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Tax</span>
+              <span className="text-foreground font-medium">${tax.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Platform Fee (15%)</span>
+              <span className="text-foreground font-medium">${platformFee.toFixed(2)}</span>
+            </div>
 
             {subtotal < 150 && (
               <div className="p-4 bg-accent/5 border border-accent/20 rounded-2xl flex items-center gap-3">
@@ -155,7 +165,7 @@ export function CartContent() {
               <span className="text-sm font-bold uppercase tracking-widest text-foreground">Total</span>
               <div className="text-right">
                 <span className="font-serif text-4xl font-light text-foreground">${total.toFixed(2)}</span>
-                <p className="text-[10px] text-muted-foreground mt-1">Tax included</p>
+                <p className="text-[10px] text-muted-foreground mt-1">All fees included</p>
               </div>
             </div>
           </div>

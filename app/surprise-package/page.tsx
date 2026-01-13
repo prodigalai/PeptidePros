@@ -110,12 +110,17 @@ export default function SurprisePackagePage() {
 
         // Parse and validate amount - ensure it's a valid number in dollars
         const cleanedAmount = formData.amount ? formData.amount.toString().replace(/[^0-9.]/g, "") : "0"
-        const amountValue = parseFloat(cleanedAmount)
+        const baseAmount = parseFloat(cleanedAmount)
         
-        if (isNaN(amountValue) || amountValue < 5) {
+        if (isNaN(baseAmount) || baseAmount < 5) {
             toast.error("Minimum package value is $5.")
             return
         }
+
+        // Calculate platform fee (15%)
+        const platformFee = baseAmount * 0.15
+        // Calculate total (base amount + platform fee)
+        const totalAmount = baseAmount + platformFee
 
         setLoading(true)
 
@@ -123,7 +128,7 @@ export default function SurprisePackagePage() {
             // In a real app, you'd probably save the order to your DB first
             // and then initiate payment. For now, we follow the user's flow.
 
-            // Send amount as-is (in dollars, not converting to cents)
+            // Send total amount (base + 15% platform fee) in dollars
             const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
                 method: 'POST',
                 headers: {
@@ -134,7 +139,7 @@ export default function SurprisePackagePage() {
                     last_name: formData.lastName,
                     email: formData.email,
                     phone_number: formData.phone ? `+1${formData.phone}` : "",
-                    amount: amountValue, // Amount in dollars (as entered
+                    amount: totalAmount, // Total amount (base + 15% platform fee)
                     currency: "USD",
                     address: formData.address,
                     country: formData.country,
@@ -504,6 +509,10 @@ export default function SurprisePackagePage() {
                                         <span className="text-slate-400">Base Curated Value</span>
                                         <span className="font-bold text-white">${parseFloat(formData.amount || "0").toFixed(2)}</span>
                                     </div>
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-slate-400">Platform Fee (15%)</span>
+                                        <span className="font-bold text-white">${(parseFloat(formData.amount || "0") * 0.15).toFixed(2)}</span>
+                                    </div>
                                     {formData.subscription === "recurring" && (
                                         <div className="flex justify-between text-sm text-emerald-400">
                                             <span>Subscription Benefit</span>
@@ -514,7 +523,7 @@ export default function SurprisePackagePage() {
 
                                 <div className="pt-6 border-t border-slate-700 flex justify-between items-baseline">
                                     <span className="text-sm font-bold uppercase tracking-[0.2em] text-slate-300">Total Due</span>
-                                    <span className="text-4xl font-serif font-light text-white">${Math.max(5, parseFloat(formData.amount || "0")).toFixed(2)}</span>
+                                    <span className="text-4xl font-serif font-light text-white">${(parseFloat(formData.amount || "0") * 1.15).toFixed(2)}</span>
                                 </div>
                             </div>
 
