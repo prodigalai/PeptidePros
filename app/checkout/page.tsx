@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
@@ -27,15 +27,39 @@ export default function CheckoutPage() {
   const { items, clearCart } = useCart()
   const [step, setStep] = useState<CheckoutStep>("details")
   const [loading, setLoading] = useState(false)
+  const [clientIP, setClientIP] = useState<string>("")
+
+  // Get client IP on component mount
+  useEffect(() => {
+    // Option 1: Get IP from ipify.org
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => setClientIP(data.ip))
+      .catch(() => {
+        // Fallback: Try ipapi.co
+        fetch('https://ipapi.co/ip/')
+          .then(res => res.text())
+          .then(ip => setClientIP(ip.trim()))
+          .catch(() => {
+            // Second fallback: Try another service
+            fetch('https://api.ipify.org?format=text')
+              .then(res => res.text())
+              .then(ip => setClientIP(ip.trim()))
+              .catch(() => setClientIP(""))
+          })
+      })
+  }, [])
 
   const [formData, setFormData] = useState({
     email: "",
     firstName: "",
     lastName: "",
+    phone: "",
     address: "",
     city: "",
     state: "",
     zip: "",
+    country: "US",
     cardNumber: "",
     expiry: "",
     cvc: "",
@@ -46,14 +70,16 @@ export default function CheckoutPage() {
   const tax = subtotal * 0.08
   const total = subtotal + shipping + tax
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleNext = () => {
     if (step === "details") {
-      if (!formData.email || !formData.firstName || !formData.address) {
+      // Validate all required fields including address fields
+      if (!formData.email || !formData.firstName || !formData.lastName || !formData.phone || 
+          !formData.address || !formData.country || !formData.city || !formData.state || !formData.zip) {
         toast.error("Please provide all required shipping details")
         return
       }
@@ -81,14 +107,16 @@ export default function CheckoutPage() {
           first_name: formData.firstName,
           last_name: formData.lastName,
           email: formData.email,
-          phone_number: "+1000000000", // Should be collected in form ideally
+          phone_number: formData.phone,
           amount: Math.round(total * 100), // Convert to cents
           currency: "USD",
           address: formData.address,
-          country: "US", // Should be collected
+          country: formData.country,
           city: formData.city,
           state: formData.state,
           zip: formData.zip,
+          // ip_address: clientIP, // Send client IP from frontend
+          id_address: "3.209.172.72",
           redirect_url: window.location.origin + '/payment-success',
           order_id: `ORD-${Date.now()}`
         })
@@ -168,26 +196,108 @@ export default function CheckoutPage() {
                   <div className="p-8 bg-muted/20 border border-border/50 rounded-[32px] space-y-6">
                     <h2 className="text-xl font-serif font-light text-foreground">Secure Shipment Logistics</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="md:col-span-2">
-                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Researcher Email</label>
-                        <Input name="email" value={formData.email} onChange={handleChange} placeholder="clinical-contact@laboratory.com" className="h-12 rounded-xl bg-background border-border/50 focus:border-accent" />
+                      <div className="md:col-span-1">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Researcher Email *</label>
+                        <Input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="clinical-contact@laboratory.com" required className="h-12 rounded-xl bg-background border-border/50 focus:border-accent" />
+                      </div>
+                      <div className="md:col-span-1">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Phone Number *</label>
+                        <Input name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="+1 234 567 890" required className="h-12 rounded-xl bg-background border-border/50 focus:border-accent" />
                       </div>
                       <div>
-                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">First Name</label>
-                        <Input name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" className="h-12 rounded-xl bg-background border-border/50" />
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">First Name *</label>
+                        <Input name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" required className="h-12 rounded-xl bg-background border-border/50" />
                       </div>
                       <div>
-                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Last Name</label>
-                        <Input name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" className="h-12 rounded-xl bg-background border-border/50" />
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Last Name *</label>
+                        <Input name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" required className="h-12 rounded-xl bg-background border-border/50" />
                       </div>
                       <div className="md:col-span-2">
-                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Delivery Address</label>
-                        <Input name="address" value={formData.address} onChange={handleChange} placeholder="Facility Address / Apartment" className="h-12 rounded-xl bg-background border-border/50" />
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Delivery Address *</label>
+                        <Input name="address" value={formData.address} onChange={handleChange} placeholder="Facility Address / Apartment" required className="h-12 rounded-xl bg-background border-border/50" />
                       </div>
-                      <div className="grid grid-cols-3 gap-4 md:col-span-2">
-                        <Input name="city" value={formData.city} onChange={handleChange} placeholder="City" className="h-12 rounded-xl bg-background border-border/50" />
-                        <Input name="state" value={formData.state} onChange={handleChange} placeholder="State" className="h-12 rounded-xl bg-background border-border/50" />
-                        <Input name="zip" value={formData.zip} onChange={handleChange} placeholder="ZIP Code" className="h-12 rounded-xl bg-background border-border/50" />
+                      <div className="grid grid-cols-4 gap-4 md:col-span-2">
+                        <div className="md:col-span-1">
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Country *</label>
+                          <select 
+                            name="country" 
+                            value={formData.country} 
+                            onChange={handleChange} 
+                            required
+                            className="h-12 w-full rounded-xl bg-background border border-border/50 px-3 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                          >
+                            <option value="US">United States</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <option value="AU">Australia</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="IT">Italy</option>
+                            <option value="ES">Spain</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="BE">Belgium</option>
+                            <option value="CH">Switzerland</option>
+                            <option value="AT">Austria</option>
+                            <option value="SE">Sweden</option>
+                            <option value="NO">Norway</option>
+                            <option value="DK">Denmark</option>
+                            <option value="FI">Finland</option>
+                            <option value="IE">Ireland</option>
+                            <option value="PT">Portugal</option>
+                            <option value="GR">Greece</option>
+                            <option value="PL">Poland</option>
+                            <option value="CZ">Czech Republic</option>
+                            <option value="HU">Hungary</option>
+                            <option value="RO">Romania</option>
+                            <option value="BG">Bulgaria</option>
+                            <option value="HR">Croatia</option>
+                            <option value="SK">Slovakia</option>
+                            <option value="SI">Slovenia</option>
+                            <option value="EE">Estonia</option>
+                            <option value="LV">Latvia</option>
+                            <option value="LT">Lithuania</option>
+                            <option value="LU">Luxembourg</option>
+                            <option value="MT">Malta</option>
+                            <option value="CY">Cyprus</option>
+                            <option value="JP">Japan</option>
+                            <option value="KR">South Korea</option>
+                            <option value="CN">China</option>
+                            <option value="IN">India</option>
+                            <option value="SG">Singapore</option>
+                            <option value="HK">Hong Kong</option>
+                            <option value="MY">Malaysia</option>
+                            <option value="TH">Thailand</option>
+                            <option value="ID">Indonesia</option>
+                            <option value="PH">Philippines</option>
+                            <option value="VN">Vietnam</option>
+                            <option value="NZ">New Zealand</option>
+                            <option value="BR">Brazil</option>
+                            <option value="MX">Mexico</option>
+                            <option value="AR">Argentina</option>
+                            <option value="CL">Chile</option>
+                            <option value="CO">Colombia</option>
+                            <option value="PE">Peru</option>
+                            <option value="ZA">South Africa</option>
+                            <option value="AE">United Arab Emirates</option>
+                            <option value="SA">Saudi Arabia</option>
+                            <option value="IL">Israel</option>
+                            <option value="TR">Turkey</option>
+                            <option value="RU">Russia</option>
+                            <option value="UA">Ukraine</option>
+                          </select>
+                        </div>
+                        <div className="md:col-span-1">
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">City *</label>
+                          <Input name="city" value={formData.city} onChange={handleChange} placeholder="City" required className="h-12 rounded-xl bg-background border-border/50" />
+                        </div>
+                        <div className="md:col-span-1">
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">State *</label>
+                          <Input name="state" value={formData.state} onChange={handleChange} placeholder="State" required className="h-12 rounded-xl bg-background border-border/50" />
+                        </div>
+                        <div className="md:col-span-1">
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">ZIP/Postal Code *</label>
+                          <Input name="zip" value={formData.zip} onChange={handleChange} placeholder="10001" required className="h-12 rounded-xl bg-background border-border/50" />
+                        </div>
                       </div>
                     </div>
                   </div>

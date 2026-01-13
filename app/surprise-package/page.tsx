@@ -55,8 +55,8 @@ export default function SurprisePackagePage() {
         e.preventDefault()
 
         // Validation
-        if (!formData.age || !formData.gender || !formData.focusArea || !formData.amount || !formData.firstName || !formData.email || !formData.address) {
-            toast.error("Please fill in all required fields, including billing details.")
+        if (!formData.age || !formData.gender || !formData.focusArea || !formData.amount || !formData.firstName || !formData.email || !formData.address || !formData.city || !formData.state || !formData.zip) {
+            toast.error("Please fill in all required fields, including complete billing address.")
             return
         }
 
@@ -338,6 +338,17 @@ export default function SurprisePackagePage() {
                                         />
                                     </div>
                                     <div className="space-y-2 md:col-span-2">
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Phone Number</label>
+                                        <Input
+                                            name="phone"
+                                            type="tel"
+                                            placeholder="+1 234 567 8900"
+                                            value={formData.phone}
+                                            onChange={handleInputChange}
+                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                        />
+                                    </div>
+                                    <div className="space-y-2 md:col-span-2">
                                         <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Street Address</label>
                                         <Input
                                             name="address"
@@ -347,13 +358,23 @@ export default function SurprisePackagePage() {
                                             className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
                                         />
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4 md:col-span-2">
+                                    <div className="grid grid-cols-3 gap-4 md:col-span-2">
                                         <div className="space-y-2">
                                             <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">City</label>
                                             <Input
                                                 name="city"
                                                 placeholder="New York"
                                                 value={formData.city}
+                                                onChange={handleInputChange}
+                                                className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">State</label>
+                                            <Input
+                                                name="state"
+                                                placeholder="NY"
+                                                value={formData.state}
                                                 onChange={handleInputChange}
                                                 className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
                                             />
