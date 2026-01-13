@@ -24,7 +24,7 @@ export default function SurprisePackagePage() {
     const { addItem } = useCart()
     const [formData, setFormData] = useState({
         age: "",
-        gender: "",
+        gender: "male", // Default to male, not sent to backend
         healthIssues: "",
         focusArea: "",
         preferences: "",
@@ -77,8 +77,8 @@ export default function SurprisePackagePage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        // Validation - Check all required fields
-        if (!formData.age || !formData.gender || !formData.focusArea || !formData.amount || !formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.zip) {
+        // Validation - Check all required fields (gender is defaulted to "male", not required)
+        if (!formData.age || !formData.focusArea || !formData.amount || !formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.zip) {
             toast.error("Please fill in all required fields, including complete billing address.")
             return
         }
@@ -192,15 +192,15 @@ export default function SurprisePackagePage() {
         <div className="min-h-screen bg-background">
             <Navigation />
 
-            <main className="pt-24 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
-                    <div className="inline-flex items-center justify-center p-2 bg-accent/10 rounded-full mb-2 animate-pulse">
-                        <Sparkles className="h-5 w-5 text-accent" />
+            <main className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div className="text-center max-w-3xl mx-auto mb-12 space-y-4 animate-in fade-in slide-in-from-top-4 duration-700">
+                    <div className="inline-flex items-center justify-center p-3 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl mb-4 shadow-lg shadow-accent/10">
+                        <Sparkles className="h-6 w-6 text-accent animate-pulse" />
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-serif font-light text-foreground tracking-tight">
+                    <h1 className="text-4xl md:text-6xl font-serif font-light text-foreground tracking-tight">
                         The Surprise Package
                     </h1>
-                    <p className="text-muted-foreground text-base leading-relaxed max-w-xl mx-auto">
+                    <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
                         Tell us about yourself, and our algorithm will curate a premium selection of vitamins and supplements tailored specifically to your biology and goals.
                     </p>
                 </div>
@@ -214,9 +214,9 @@ export default function SurprisePackagePage() {
                         <form onSubmit={handleSubmit} className="space-y-8">
 
                             {/* Investment Section */}
-                            <div className="p-8 bg-card border border-border/50 rounded-[32px] space-y-6 shadow-sm">
-                                <h2 className="text-xl font-serif font-light text-foreground flex items-center gap-3">
-                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent text-sm font-bold">1</span>
+                            <div className="p-8 md:p-10 bg-gradient-to-br from-card to-card/50 border border-border/50 rounded-[32px] space-y-6 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300">
+                                <h2 className="text-2xl font-serif font-light text-foreground flex items-center gap-3">
+                                    <span className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-accent/20 to-accent/10 text-accent text-base font-bold shadow-md shadow-accent/20">1</span>
                                     Your Investment
                                 </h2>
 
@@ -226,9 +226,9 @@ export default function SurprisePackagePage() {
                                             <RadioGroupItem value="one-time" id="one-time" className="peer sr-only" />
                                             <label
                                                 htmlFor="one-time"
-                                                className="flex flex-col items-center justify-between rounded-2xl border-2 border-muted bg-transparent p-4 hover:bg-accent/5 hover:text-accent-foreground peer-data-[state=checked]:border-accent peer-data-[state=checked]:bg-accent/5 [&:has([data-state=checked])]:border-accent cursor-pointer transition-all h-full"
+                                                className="flex flex-col items-center justify-between rounded-2xl border-2 border-muted bg-transparent p-6 hover:bg-accent/5 hover:border-accent/50 hover:text-accent-foreground peer-data-[state=checked]:border-accent peer-data-[state=checked]:bg-accent/10 peer-data-[state=checked]:shadow-lg peer-data-[state=checked]:shadow-accent/20 [&:has([data-state=checked])]:border-accent cursor-pointer transition-all duration-300 h-full group"
                                             >
-                                                <Gift className="mb-3 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-accent" />
+                                                <Gift className="mb-3 h-7 w-7 text-muted-foreground peer-data-[state=checked]:text-accent group-hover:scale-110 transition-transform" />
                                                 <span className="text-sm font-bold uppercase tracking-wider">One-Time Surprise</span>
                                                 <span className="text-xs text-muted-foreground mt-1 text-center">Single curated box</span>
                                             </label>
@@ -237,10 +237,10 @@ export default function SurprisePackagePage() {
                                             <RadioGroupItem value="recurring" id="recurring" className="peer sr-only" />
                                             <label
                                                 htmlFor="recurring"
-                                                className="flex flex-col items-center justify-between rounded-2xl border-2 border-muted bg-transparent p-4 hover:bg-accent/5 hover:text-accent-foreground peer-data-[state=checked]:border-accent peer-data-[state=checked]:bg-accent/5 [&:has([data-state=checked])]:border-accent cursor-pointer transition-all h-full relative overflow-hidden"
+                                                className="flex flex-col items-center justify-between rounded-2xl border-2 border-muted bg-transparent p-6 hover:bg-accent/5 hover:border-accent/50 hover:text-accent-foreground peer-data-[state=checked]:border-accent peer-data-[state=checked]:bg-accent/10 peer-data-[state=checked]:shadow-lg peer-data-[state=checked]:shadow-accent/20 [&:has([data-state=checked])]:border-accent cursor-pointer transition-all duration-300 h-full relative overflow-hidden group"
                                             >
-                                                <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-bold px-2 py-1 rounded-bl-xl uppercase tracking-wider">Save 10%</div>
-                                                <Zap className="mb-3 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-accent" />
+                                                <div className="absolute top-0 right-0 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white text-[9px] font-bold px-3 py-1.5 rounded-bl-xl uppercase tracking-wider shadow-md">Save 10%</div>
+                                                <Zap className="mb-3 h-7 w-7 text-muted-foreground peer-data-[state=checked]:text-accent group-hover:scale-110 transition-transform" />
                                                 <span className="text-sm font-bold uppercase tracking-wider">Monthly Refill</span>
                                                 <span className="text-xs text-muted-foreground mt-1 text-center">Auto-replenish your health</span>
                                             </label>
@@ -250,36 +250,40 @@ export default function SurprisePackagePage() {
                                     <div className="space-y-4 pt-4 border-t border-border/50">
                                         <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Set Your Budget</label>
 
-                                        <div className="grid grid-cols-4 gap-2 mb-2">
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                                             {["100", "500", "1000", "10000"].map((preset) => (
                                                 <Button
                                                     key={preset}
                                                     type="button"
                                                     variant={formData.amount === preset ? "default" : "outline"}
                                                     onClick={() => handleSelectChange("amount", preset)}
-                                                    className={`h-10 text-xs font-bold ${formData.amount === preset
-                                                        ? "bg-accent text-accent-foreground border-accent shadow-lg shadow-accent/20 scale-105"
-                                                        : "hover:bg-accent/10 hover:border-accent/50 text-muted-foreground"
-                                                        } transition-all duration-300`}
+                                                    className={`h-12 text-sm font-bold transition-all duration-300 ${
+                                                        formData.amount === preset
+                                                            ? "bg-accent text-accent-foreground border-accent shadow-lg shadow-accent/30 scale-105 ring-2 ring-accent/20"
+                                                            : "hover:bg-accent/10 hover:border-accent/50 hover:scale-105 text-muted-foreground"
+                                                    }`}
                                                 >
                                                     ${preset}
                                                 </Button>
                                             ))}
                                         </div>
-                                        <div className="relative">
-                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-serif text-lg">$</span>
+                                        <div className="relative group">
+                                            <span className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground font-serif text-xl font-medium group-focus-within:text-accent transition-colors">$</span>
                                             <Input
                                                 name="amount"
                                                 type="text"
                                                 min="5"
                                                 value={formData.amount}
                                                 onChange={handleInputChange}
-                                                className="h-16 pl-8 text-3xl font-bold bg-background border-2 border-border/50 focus:border-accent text-black rounded-xl shadow-inner placeholder:text-muted-foreground/20"
-                                                placeholder="20.00"
+                                                className="h-20 pl-12 pr-20 text-4xl font-bold bg-background border-2 border-border/50 focus:border-accent focus:ring-2 focus:ring-accent/20 text-foreground rounded-2xl shadow-inner placeholder:text-muted-foreground/30 transition-all"
+                                                placeholder="500.00"
                                             />
-                                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-bold uppercase tracking-widest">USD</span>
+                                            <span className="absolute right-5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-bold uppercase tracking-widest">USD</span>
                                         </div>
-                                        <p className="text-xs text-muted-foreground ml-1">Minimum $5. No upper limit. Higher budget allows for more premium compounds.</p>
+                                        <p className="text-xs text-muted-foreground ml-1 flex items-center gap-2">
+                                            <ShieldCheck className="h-3 w-3 text-emerald-500" />
+                                            Minimum $5. No upper limit. Higher budget allows for more premium compounds.
+                                        </p>
                                     </div>
 
                                     <div className="mt-8 rounded-2xl overflow-hidden border border-border/50 relative group">
@@ -297,53 +301,45 @@ export default function SurprisePackagePage() {
                             </div>
 
                             {/* Personal Details */}
-                            <div className="p-8 bg-card border border-border/50 rounded-[32px] space-y-6 shadow-sm">
-                                <h2 className="text-xl font-serif font-light text-foreground flex items-center gap-3">
-                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent text-sm font-bold">2</span>
+                            <div className="p-8 md:p-10 bg-gradient-to-br from-card to-card/50 border border-border/50 rounded-[32px] space-y-6 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300">
+                                <h2 className="text-2xl font-serif font-light text-foreground flex items-center gap-3">
+                                    <span className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-accent/20 to-accent/10 text-accent text-base font-bold shadow-md shadow-accent/20">2</span>
                                     Biological Profile
                                 </h2>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Age</label>
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                            Age
+                                            <span className="text-red-500">*</span>
+                                        </label>
                                         <Input
                                             name="age"
                                             type="number"
                                             placeholder="e.g. 35"
                                             value={formData.age}
                                             onChange={handleInputChange}
-                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
                                         />
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Gender</label>
-                                        <Select onValueChange={(val) => handleSelectChange("gender", val)}>
-                                            <SelectTrigger className="h-12 rounded-xl bg-background border-border/50 focus:border-accent">
-                                                <SelectValue placeholder="Select Gender" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="male">Male</SelectItem>
-                                                <SelectItem value="female">Female</SelectItem>
-                                                <SelectItem value="other">Other / Prefer not to say</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-
                                     <div className="space-y-2 md:col-span-2">
-                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Primary Focus Area</label>
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                            Primary Focus Area
+                                            <span className="text-red-500">*</span>
+                                        </label>
                                         <Select onValueChange={(val) => handleSelectChange("focusArea", val)}>
-                                            <SelectTrigger className="h-12 rounded-xl bg-background border-border/50 focus:border-accent">
+                                            <SelectTrigger className="h-12 rounded-xl bg-background border-border/50 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all">
                                                 <SelectValue placeholder="What are your main goals?" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="energy">Energy & Vitality</SelectItem>
-                                                <SelectItem value="sleep">Sleep & Recovery</SelectItem>
-                                                <SelectItem value="immunity">Immunity & Defense</SelectItem>
-                                                <SelectItem value="stress">Stress & Mood</SelectItem>
-                                                <SelectItem value="fitness">Fitness & Performance</SelectItem>
-                                                <SelectItem value="beauty">Skin, Hair & Nails</SelectItem>
-                                                <SelectItem value="general">General Wellness</SelectItem>
+                                                <SelectItem value="energy">⚡ Energy & Vitality</SelectItem>
+                                                <SelectItem value="sleep">😴 Sleep & Recovery</SelectItem>
+                                                <SelectItem value="immunity">🛡️ Immunity & Defense</SelectItem>
+                                                <SelectItem value="stress">🧘 Stress & Mood</SelectItem>
+                                                <SelectItem value="fitness">💪 Fitness & Performance</SelectItem>
+                                                <SelectItem value="beauty">✨ Skin, Hair & Nails</SelectItem>
+                                                <SelectItem value="general">🌱 General Wellness</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -373,15 +369,18 @@ export default function SurprisePackagePage() {
                             </div>
 
                             {/* Billing & Shipment Details */}
-                            <div className="p-8 bg-card border border-border/50 rounded-[32px] space-y-6 shadow-sm">
-                                <h2 className="text-xl font-serif font-light text-foreground flex items-center gap-3">
-                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent text-sm font-bold">3</span>
+                            <div className="p-8 md:p-10 bg-gradient-to-br from-card to-card/50 border border-border/50 rounded-[32px] space-y-6 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300">
+                                <h2 className="text-2xl font-serif font-light text-foreground flex items-center gap-3">
+                                    <span className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-accent/20 to-accent/10 text-accent text-base font-bold shadow-md shadow-accent/20">3</span>
                                     Billing & Logistics
                                 </h2>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">First Name</label>
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                            First Name
+                                            <span className="text-red-500">*</span>
+                                        </label>
                                         <Input
                                             name="firstName"
                                             placeholder="First Name (min 5 characters)"
@@ -389,11 +388,14 @@ export default function SurprisePackagePage() {
                                             onChange={handleInputChange}
                                             required
                                             minLength={5}
-                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Last Name</label>
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                            Last Name
+                                            <span className="text-red-500">*</span>
+                                        </label>
                                         <Input
                                             name="lastName"
                                             placeholder="Last Name (min 5 characters)"
@@ -401,7 +403,7 @@ export default function SurprisePackagePage() {
                                             onChange={handleInputChange}
                                             required
                                             minLength={5}
-                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
                                         />
                                     </div>
                                     <div className="space-y-2 md:col-span-2">
@@ -495,47 +497,58 @@ export default function SurprisePackagePage() {
                                 </p>
                             </div>
 
-                            <div className="space-y-4 relative z-10">
-                                <div className="flex justify-between items-center py-4 border-b border-slate-700">
-                                    <span className="text-sm font-medium text-slate-400">Profile Status</span>
-                                    <span className="flex items-center gap-2 text-sm font-bold text-emerald-400">
-                                        <CheckCircle2 className="h-4 w-4" />
-                                        {formData.age && formData.gender && formData.focusArea ? "Complete" : "Incomplete"}
+                            <div className="space-y-5 relative z-10">
+                                <div className="flex justify-between items-center py-4 px-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
+                                    <span className="text-sm font-medium text-slate-300">Profile Status</span>
+                                    <span className={`flex items-center gap-2 text-sm font-bold px-3 py-1.5 rounded-full ${
+                                        formData.age && formData.focusArea 
+                                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" 
+                                            : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                                    }`}>
+                                        <CheckCircle2 className={`h-4 w-4 ${formData.age && formData.focusArea ? "text-emerald-400" : "text-amber-400"}`} />
+                                        {formData.age && formData.focusArea ? "Complete" : "Incomplete"}
                                     </span>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-400">Base Curated Value</span>
-                                        <span className="font-bold text-white">${parseFloat(formData.amount || "0").toFixed(2)}</span>
+                                <div className="space-y-3 bg-slate-800/30 rounded-xl p-4 border border-slate-700/30">
+                                    <div className="flex justify-between text-sm items-center">
+                                        <span className="text-slate-300">Base Curated Value</span>
+                                        <span className="font-bold text-white text-base">${parseFloat(formData.amount || "0").toFixed(2)}</span>
                                     </div>
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-400">Platform Fee (15%)</span>
-                                        <span className="font-bold text-white">${(parseFloat(formData.amount || "0") * 0.15).toFixed(2)}</span>
+                                    <div className="flex justify-between text-sm items-center">
+                                        <span className="text-slate-300">Platform Fee (15%)</span>
+                                        <span className="font-bold text-white text-base">${(parseFloat(formData.amount || "0") * 0.15).toFixed(2)}</span>
                                     </div>
                                     {formData.subscription === "recurring" && (
-                                        <div className="flex justify-between text-sm text-emerald-400">
-                                            <span>Subscription Benefit</span>
-                                            <span className="font-bold">Priority Processing</span>
+                                        <div className="flex justify-between text-sm items-center pt-2 border-t border-slate-700/50">
+                                            <span className="text-emerald-400">Subscription Benefit</span>
+                                            <span className="font-bold text-emerald-400">Priority Processing</span>
                                         </div>
                                     )}
                                 </div>
 
-                                <div className="pt-6 border-t border-slate-700 flex justify-between items-baseline">
+                                <div className="pt-4 border-t border-slate-700 flex justify-between items-baseline bg-gradient-to-r from-slate-800/50 to-transparent rounded-xl p-4">
                                     <span className="text-sm font-bold uppercase tracking-[0.2em] text-slate-300">Total Due</span>
-                                    <span className="text-4xl font-serif font-light text-white">${(parseFloat(formData.amount || "0") * 1.15).toFixed(2)}</span>
+                                    <span className="text-4xl font-serif font-light text-white bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent">
+                                        ${(parseFloat(formData.amount || "0") * 1.15).toFixed(2)}
+                                    </span>
                                 </div>
                             </div>
 
                             <Button
                                 onClick={handleSubmit}
-                                className="relative w-full h-16 rounded-2xl font-bold tracking-[0.2em] uppercase text-sm overflow-hidden group transition-all hover:scale-[1.02] shadow-[0_0_40px_-10px_rgba(var(--accent),0.5)]"
-                                disabled={loading}
+                                className="relative w-full h-16 rounded-2xl font-bold tracking-[0.2em] uppercase text-sm overflow-hidden group transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_40px_-10px_rgba(var(--accent),0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled={loading || !formData.age || !formData.focusArea}
                             >
                                 <div className="absolute inset-0 bg-gradient-to-r from-amber-200 via-accent to-amber-200 opacity-90 group-hover:opacity-100 transition-opacity" />
                                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
                                 <span className="relative z-10 text-black flex items-center justify-center gap-2">
-                                    {loading ? "Processing Securely..." : (
+                                    {loading ? (
+                                        <>
+                                            <div className="h-4 w-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                            Processing Securely...
+                                        </>
+                                    ) : (
                                         <>
                                             Proceed to Checkout
                                             <ShieldCheck className="h-4 w-4" />
