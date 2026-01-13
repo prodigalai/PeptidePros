@@ -52,6 +52,19 @@ export default function SurprisePackagePage() {
             // Limit to 10 digits
             const limitedDigits = digitsOnly.slice(0, 10)
             setFormData((prev) => ({ ...prev, [name]: limitedDigits }))
+        } else if (name === "amount") {
+            // Handle amount - remove $ sign and allow only numbers and decimal point
+            let cleanedValue = value.replace(/[^0-9.]/g, "")
+            // Remove leading zeros except for decimal numbers
+            if (cleanedValue.length > 1 && cleanedValue[0] === '0' && cleanedValue[1] !== '.') {
+                cleanedValue = cleanedValue.replace(/^0+/, '') || '0'
+            }
+            // Allow only one decimal point
+            const parts = cleanedValue.split(".")
+            const formattedValue = parts.length > 2 
+                ? parts[0] + "." + parts.slice(1).join("")
+                : cleanedValue
+            setFormData((prev) => ({ ...prev, [name]: formattedValue }))
         } else {
             setFormData((prev) => ({ ...prev, [name]: value }))
         }
@@ -95,8 +108,11 @@ export default function SurprisePackagePage() {
             return
         }
 
-        const amount = parseFloat(formData.amount)
-        if (isNaN(amount) || amount < 5) {
+        // Parse and validate amount - ensure it's a valid number in dollars
+        const cleanedAmount = formData.amount ? formData.amount.toString().replace(/[^0-9.]/g, "") : "0"
+        const amountValue = parseFloat(cleanedAmount)
+        
+        if (isNaN(amountValue) || amountValue < 5) {
             toast.error("Minimum package value is $5.")
             return
         }
@@ -107,6 +123,7 @@ export default function SurprisePackagePage() {
             // In a real app, you'd probably save the order to your DB first
             // and then initiate payment. For now, we follow the user's flow.
 
+            // Send amount as-is (in dollars, not converting to cents)
             const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
                 method: 'POST',
                 headers: {
@@ -117,7 +134,7 @@ export default function SurprisePackagePage() {
                     last_name: formData.lastName,
                     email: formData.email,
                     phone_number: formData.phone ? `+1${formData.phone}` : "",
-                    amount: amount * 100, // Convert to cents
+                    amount: amountValue, // Amount in dollars (as entered
                     currency: "USD",
                     address: formData.address,
                     country: formData.country,
@@ -248,12 +265,12 @@ export default function SurprisePackagePage() {
                                             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-serif text-lg">$</span>
                                             <Input
                                                 name="amount"
-                                                type="number"
+                                                type="text"
                                                 min="5"
-                                                step="1"
                                                 value={formData.amount}
                                                 onChange={handleInputChange}
                                                 className="h-16 pl-8 text-3xl font-bold bg-background border-2 border-border/50 focus:border-accent text-black rounded-xl shadow-inner placeholder:text-muted-foreground/20"
+                                                placeholder="20.00"
                                             />
                                             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-bold uppercase tracking-widest">USD</span>
                                         </div>
@@ -485,7 +502,7 @@ export default function SurprisePackagePage() {
                                 <div className="space-y-2">
                                     <div className="flex justify-between text-sm">
                                         <span className="text-slate-400">Base Curated Value</span>
-                                        <span className="font-bold text-white">${parseInt(formData.amount || "0").toFixed(2)}</span>
+                                        <span className="font-bold text-white">${parseFloat(formData.amount || "0").toFixed(2)}</span>
                                     </div>
                                     {formData.subscription === "recurring" && (
                                         <div className="flex justify-between text-sm text-emerald-400">
@@ -497,7 +514,7 @@ export default function SurprisePackagePage() {
 
                                 <div className="pt-6 border-t border-slate-700 flex justify-between items-baseline">
                                     <span className="text-sm font-bold uppercase tracking-[0.2em] text-slate-300">Total Due</span>
-                                    <span className="text-4xl font-serif font-light text-white">${Math.max(5, parseInt(formData.amount || "0")).toFixed(2)}</span>
+                                    <span className="text-4xl font-serif font-light text-white">${Math.max(5, parseFloat(formData.amount || "0")).toFixed(2)}</span>
                                 </div>
                             </div>
 

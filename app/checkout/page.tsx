@@ -63,12 +63,16 @@ export default function CheckoutPage() {
     cardNumber: "",
     expiry: "",
     cvc: "",
+    testAmount: "", // For testing purposes
   })
 
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
   const shipping = subtotal > 150 ? 0 : 9.99
   const tax = subtotal * 0.08
-  const total = subtotal + shipping + tax
+  // Use test amount if provided, otherwise use calculated total
+  const testAmountValue = formData.testAmount ? parseFloat(formData.testAmount) : null
+  const useTestAmount = testAmountValue && testAmountValue > 0
+  const total = useTestAmount ? testAmountValue : (subtotal + shipping + tax)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -80,6 +84,15 @@ export default function CheckoutPage() {
       // Limit to 10 digits
       const limitedDigits = digitsOnly.slice(0, 10)
       setFormData((prev) => ({ ...prev, [name]: limitedDigits }))
+    } else if (name === "testAmount") {
+      // Handle test amount - remove $ sign and allow only numbers and decimal point
+      const cleanedValue = value.replace(/[^0-9.]/g, "")
+      // Allow only one decimal point
+      const parts = cleanedValue.split(".")
+      const formattedValue = parts.length > 2 
+        ? parts[0] + "." + parts.slice(1).join("")
+        : cleanedValue
+      setFormData((prev) => ({ ...prev, [name]: formattedValue }))
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
     }
@@ -183,6 +196,9 @@ export default function CheckoutPage() {
     }
 
     try {
+      // Ensure total is a valid number - send as-is in dollars
+      const totalValue = typeof total === 'number' && !isNaN(total) ? total : 0
+
       const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
         method: 'POST',
         headers: {
@@ -193,7 +209,7 @@ export default function CheckoutPage() {
           last_name: formData.lastName,
           email: formData.email,
           phone_number: formData.phone ? `+1${formData.phone}` : "",
-          amount: Math.round(total * 100), // Convert to cents
+          amount: totalValue, // Amount in dollars (as entered)
           currency: "USD",
           address: formData.address,
           country: formData.country,
@@ -446,6 +462,21 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="space-y-4">
+                      <div className="p-4 bg-accent/5 border border-accent/20 rounded-xl">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Test Amount Override (Optional)</label>
+                        <div className="relative">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-serif">$</span>
+                          <Input 
+                            name="testAmount" 
+                            type="text" 
+                            value={formData.testAmount} 
+                            onChange={handleChange} 
+                            placeholder="20.00" 
+                            className="h-12 pl-8 rounded-xl bg-background border-border/50" 
+                          />
+                        </div>
+                        <p className="text-[9px] text-muted-foreground mt-1 ml-1">Enter amount in dollars (e.g., 20 for $20.00). Leave empty to use cart total.</p>
+                      </div>
                       <div>
                         <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Card Number</label>
                         <Input name="cardNumber" value={formData.cardNumber} onChange={handleChange} placeholder="4242 4242 4242 4242" className="h-12 rounded-xl bg-background border-border/50" />
