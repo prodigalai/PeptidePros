@@ -44,7 +44,17 @@ export default function SurprisePackagePage() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        setFormData((prev) => ({ ...prev, [name]: value }))
+        
+        // Handle phone number - only allow 10 digits
+        if (name === "phone") {
+            // Remove all non-digit characters
+            const digitsOnly = value.replace(/\D/g, "")
+            // Limit to 10 digits
+            const limitedDigits = digitsOnly.slice(0, 10)
+            setFormData((prev) => ({ ...prev, [name]: limitedDigits }))
+        } else {
+            setFormData((prev) => ({ ...prev, [name]: value }))
+        }
     }
 
     const handleSelectChange = (name: string, value: string) => {
@@ -54,9 +64,34 @@ export default function SurprisePackagePage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        // Validation
-        if (!formData.age || !formData.gender || !formData.focusArea || !formData.amount || !formData.firstName || !formData.email || !formData.address || !formData.city || !formData.state || !formData.zip) {
+        // Validation - Check all required fields
+        if (!formData.age || !formData.gender || !formData.focusArea || !formData.amount || !formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.zip) {
             toast.error("Please fill in all required fields, including complete billing address.")
+            return
+        }
+
+        // Validate name length (minimum 5 characters)
+        if (formData.firstName.trim().length < 5) {
+            toast.error("First name must be at least 5 characters long")
+            return
+        }
+        
+        if (formData.lastName.trim().length < 5) {
+            toast.error("Last name must be at least 5 characters long")
+            return
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(formData.email)) {
+            toast.error("Please enter a valid email address")
+            return
+        }
+
+        // Validate phone number (must be 10 digits)
+        const phoneDigits = formData.phone.replace(/\D/g, "")
+        if (phoneDigits.length !== 10) {
+            toast.error("Phone number must be exactly 10 digits")
             return
         }
 
@@ -81,7 +116,7 @@ export default function SurprisePackagePage() {
                     first_name: formData.firstName,
                     last_name: formData.lastName,
                     email: formData.email,
-                    phone_number: formData.phone || "+1000000000",
+                    phone_number: formData.phone ? `+1${formData.phone}` : "",
                     amount: amount * 100, // Convert to cents
                     currency: "USD",
                     address: formData.address,
@@ -94,6 +129,15 @@ export default function SurprisePackagePage() {
                 })
             });
 
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ message: "Server error occurred" }))
+                toast.error("Payment Failed", {
+                    description: errorData.message || `Server error: ${response.status} ${response.statusText}`
+                });
+                setLoading(false);
+                return;
+            }
+
             const result = await response.json();
 
             if (result.success && result.payment_url) {
@@ -101,14 +145,22 @@ export default function SurprisePackagePage() {
                 window.location.href = result.payment_url;
             } else {
                 toast.error("Payment Initialization Failed", {
-                    description: result.message || "Please try again later."
+                    description: result.message || "Payment initialization failed. Please try again."
                 });
                 setLoading(false);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Payment error:', error);
-            toast.error("Payment request failed", {
-                description: "Ensure the backend server is running on port 5000."
+            
+            let errorMessage = "Payment request failed. Please try again."
+            if (error.message) {
+                errorMessage = error.message
+            } else if (error instanceof TypeError && error.message.includes('fetch')) {
+                errorMessage = "Network error. Please check your connection and try again."
+            }
+            
+            toast.error("Payment Request Failed", {
+                description: errorMessage
             });
             setLoading(false);
         }
@@ -310,9 +362,11 @@ export default function SurprisePackagePage() {
                                         <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">First Name</label>
                                         <Input
                                             name="firstName"
-                                            placeholder="James"
+                                            placeholder="First Name (min 5 characters)"
                                             value={formData.firstName}
                                             onChange={handleInputChange}
+                                            required
+                                            minLength={5}
                                             className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
                                         />
                                     </div>
@@ -320,9 +374,11 @@ export default function SurprisePackagePage() {
                                         <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Last Name</label>
                                         <Input
                                             name="lastName"
-                                            placeholder="Dean"
+                                            placeholder="Last Name (min 5 characters)"
                                             value={formData.lastName}
                                             onChange={handleInputChange}
+                                            required
+                                            minLength={5}
                                             className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
                                         />
                                     </div>
@@ -342,9 +398,11 @@ export default function SurprisePackagePage() {
                                         <Input
                                             name="phone"
                                             type="tel"
-                                            placeholder="+1 234 567 8900"
+                                            placeholder="1234567890"
                                             value={formData.phone}
                                             onChange={handleInputChange}
+                                            maxLength={10}
+                                            pattern="[0-9]{10}"
                                             className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
                                         />
                                     </div>
