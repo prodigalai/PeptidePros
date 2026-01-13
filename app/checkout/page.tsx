@@ -71,15 +71,47 @@ export default function CheckoutPage() {
     e.preventDefault()
     setLoading(true)
 
-    // Simulate clinical payment processing
-    setTimeout(() => {
-      clearCart()
-      setLoading(false)
-      toast.success("Order Authorized Successfully", {
-        description: "Your research compounds are being prepared for dispatch."
-      })
-      router.push("/order-confirmation")
-    }, 2500)
+    try {
+      const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          phone_number: "+1000000000", // Should be collected in form ideally
+          amount: Math.round(total * 100), // Convert to cents
+          currency: "USD",
+          address: formData.address,
+          country: "US", // Should be collected
+          city: formData.city,
+          state: formData.state,
+          zip: formData.zip,
+          redirect_url: window.location.origin + '/payment-success',
+          order_id: `ORD-${Date.now()}`
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.success && result.payment_url) {
+        toast.success("Redirecting to PayAgency Secure Terminal...")
+        window.location.href = result.payment_url;
+      } else {
+        toast.error("Payment Failed", {
+          description: result.message || "Initialization error."
+        });
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast.error("Process Halted", {
+        description: "Payment gateway communication failure."
+      });
+      setLoading(false);
+    }
   }
 
   if (items.length === 0) {

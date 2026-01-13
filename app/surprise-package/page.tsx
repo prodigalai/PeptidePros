@@ -30,6 +30,15 @@ export default function SurprisePackagePage() {
         preferences: "",
         subscription: "one-time",
         amount: "500",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        address: "",
+        city: "",
+        state: "",
+        zip: "",
+        country: "US"
     })
     const [loading, setLoading] = useState(false)
 
@@ -46,8 +55,8 @@ export default function SurprisePackagePage() {
         e.preventDefault()
 
         // Validation
-        if (!formData.age || !formData.gender || !formData.focusArea || !formData.amount) {
-            toast.error("Please fill in all required fields to generate your package.")
+        if (!formData.age || !formData.gender || !formData.focusArea || !formData.amount || !formData.firstName || !formData.email || !formData.address) {
+            toast.error("Please fill in all required fields, including billing details.")
             return
         }
 
@@ -59,31 +68,50 @@ export default function SurprisePackagePage() {
 
         setLoading(true)
 
-        // Create the custom Surprise Package product
-        const surpriseProduct = {
-            id: `surprise-${Date.now()}`,
-            name: `Surprise Package (${formData.focusArea.charAt(0).toUpperCase() + formData.focusArea.slice(1)})`,
-            category: "Surprise",
-            price: amount,
-            image: "/g11.png", // Using a generic supplement image
-            description: `Curated package for ${formData.age}yo ${formData.gender}. Focus: ${formData.focusArea}. ${formData.healthIssues ? `Health Notes: ${formData.healthIssues}. ` : ""}${formData.preferences ? `Preferences: ${formData.preferences}` : ""}`,
-            rating: 5,
-            reviews: 0,
-            inStock: true,
-            sku: "SURPRISE-PKG",
-            quantity: "1 Box"
+        try {
+            // In a real app, you'd probably save the order to your DB first
+            // and then initiate payment. For now, we follow the user's flow.
+
+            const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
+                    email: formData.email,
+                    phone_number: formData.phone || "+1000000000",
+                    amount: amount * 100, // Convert to cents
+                    currency: "USD",
+                    address: formData.address,
+                    country: formData.country,
+                    city: formData.city,
+                    state: formData.state,
+                    zip: formData.zip,
+                    redirect_url: window.location.origin + '/payment-success',
+                    order_id: `SURPRISE-${Date.now()}`
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success && result.payment_url) {
+                toast.success("Redirecting to secure payment gateway...")
+                window.location.href = result.payment_url;
+            } else {
+                toast.error("Payment Initialization Failed", {
+                    description: result.message || "Please try again later."
+                });
+                setLoading(false);
+            }
+        } catch (error) {
+            console.error('Payment error:', error);
+            toast.error("Payment request failed", {
+                description: "Ensure the backend server is running on port 5000."
+            });
+            setLoading(false);
         }
-
-        // Add to cart and redirect
-        // Small delay to show the loading state/animation
-        await new Promise(resolve => setTimeout(resolve, 800))
-
-        addItem(surpriseProduct, 1)
-        toast.success("Package Generated & Added to Cart", {
-            description: "Redirecting to checkout..."
-        })
-
-        router.push("/checkout")
     }
 
     return (
@@ -270,6 +298,79 @@ export default function SurprisePackagePage() {
                                 </div>
                             </div>
 
+                            {/* Billing & Shipment Details */}
+                            <div className="p-8 bg-card border border-border/50 rounded-[32px] space-y-6 shadow-sm">
+                                <h2 className="text-xl font-serif font-light text-foreground flex items-center gap-3">
+                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent text-sm font-bold">3</span>
+                                    Billing & Logistics
+                                </h2>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">First Name</label>
+                                        <Input
+                                            name="firstName"
+                                            placeholder="James"
+                                            value={formData.firstName}
+                                            onChange={handleInputChange}
+                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Last Name</label>
+                                        <Input
+                                            name="lastName"
+                                            placeholder="Dean"
+                                            value={formData.lastName}
+                                            onChange={handleInputChange}
+                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                        />
+                                    </div>
+                                    <div className="space-y-2 md:col-span-2">
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Email Address</label>
+                                        <Input
+                                            name="email"
+                                            type="email"
+                                            placeholder="james@example.com"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                        />
+                                    </div>
+                                    <div className="space-y-2 md:col-span-2">
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Street Address</label>
+                                        <Input
+                                            name="address"
+                                            placeholder="123 Health Ave, Suite 100"
+                                            value={formData.address}
+                                            onChange={handleInputChange}
+                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4 md:col-span-2">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">City</label>
+                                            <Input
+                                                name="city"
+                                                placeholder="New York"
+                                                value={formData.city}
+                                                onChange={handleInputChange}
+                                                className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">ZIP Code</label>
+                                            <Input
+                                                name="zip"
+                                                placeholder="10001"
+                                                value={formData.zip}
+                                                onChange={handleInputChange}
+                                                className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
 
