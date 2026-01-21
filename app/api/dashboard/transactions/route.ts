@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const BACKEND_URL = 'https://peptide-445ed25dbf1d.herokuapp.com';
+const BACKEND_URL = 'http://localhost:5000';
 
 export async function GET(request: Request) {
     try {
@@ -52,10 +52,10 @@ export async function GET(request: Request) {
         const transactions = backendData.data.map((tx: any) => {
             // Amount from backend is total (original + 15% fee)
             const totalAmount = parseFloat(tx.amount || tx.total_amount || 0);
-            
+
             // Calculate original amount: total / 1.15
             const originalAmount = totalAmount / 1.15;
-            
+
             // Calculate platform fee: 15% of original
             const platformFee = originalAmount * 0.15;
 

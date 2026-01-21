@@ -73,7 +73,7 @@ export default function CheckoutPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    
+
     // Handle phone number - only allow 10 digits (no country code)
     if (name === "phone") {
       // Remove all non-digit characters
@@ -89,58 +89,58 @@ export default function CheckoutPage() {
   const handleNext = () => {
     if (step === "details") {
       // Validate all required fields including address fields
-      if (!formData.email || !formData.firstName || !formData.lastName || !formData.phone || 
-          !formData.address || !formData.country || !formData.city || !formData.state || !formData.zip) {
+      if (!formData.email || !formData.firstName || !formData.lastName || !formData.phone ||
+        !formData.address || !formData.country || !formData.city || !formData.state || !formData.zip) {
         toast.error("Please provide all required shipping details")
         return
       }
-      
+
       // Validate name length (minimum 5 characters)
       if (formData.firstName.trim().length < 5) {
         toast.error("First name must be at least 5 characters long")
         return
       }
-      
+
       if (formData.lastName.trim().length < 5) {
         toast.error("Last name must be at least 5 characters long")
         return
       }
-      
+
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       if (!emailRegex.test(formData.email)) {
         toast.error("Please enter a valid email address")
         return
       }
-      
+
       // Validate phone number (must be 10 digits)
       const phoneDigits = formData.phone.replace(/\D/g, "")
       if (phoneDigits.length !== 10) {
         toast.error("Phone number must be exactly 10 digits")
         return
       }
-      
+
       setStep("payment")
     } else if (step === "payment") {
       if (!formData.cardNumber || !formData.expiry) {
         toast.error("Please provide valid payment details")
         return
       }
-      
+
       // Validate card number (remove spaces and check length)
       const cardDigits = formData.cardNumber.replace(/\D/g, "")
       if (cardDigits.length < 13 || cardDigits.length > 19) {
         toast.error("Please enter a valid card number")
         return
       }
-      
+
       // Validate expiry date format (MM/YY)
       const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/
       if (!expiryRegex.test(formData.expiry)) {
         toast.error("Please enter expiry date in MM/YY format")
         return
       }
-      
+
       setStep("review")
     }
   }
@@ -150,32 +150,32 @@ export default function CheckoutPage() {
     setLoading(true)
 
     // Final validation before submission
-    if (!formData.email || !formData.firstName || !formData.lastName || !formData.phone || 
-        !formData.address || !formData.country || !formData.city || !formData.state || !formData.zip) {
+    if (!formData.email || !formData.firstName || !formData.lastName || !formData.phone ||
+      !formData.address || !formData.country || !formData.city || !formData.state || !formData.zip) {
       toast.error("Please provide all required shipping details")
       setLoading(false)
       return
     }
-    
+
     if (formData.firstName.trim().length < 5) {
       toast.error("First name must be at least 5 characters long")
       setLoading(false)
       return
     }
-    
+
     if (formData.lastName.trim().length < 5) {
       toast.error("Last name must be at least 5 characters long")
       setLoading(false)
       return
     }
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(formData.email)) {
       toast.error("Please enter a valid email address")
       setLoading(false)
       return
     }
-    
+
     const phoneDigits = formData.phone.replace(/\D/g, "")
     if (phoneDigits.length !== 10) {
       toast.error("Phone number must be exactly 10 digits")
@@ -187,7 +187,7 @@ export default function CheckoutPage() {
       // Ensure total is a valid number - send as-is in dollars
       const totalValue = typeof total === 'number' && !isNaN(total) ? total : 0
 
-      const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
+      const response = await fetch('http://localhost:5000/api/payment/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ export default function CheckoutPage() {
           state: formData.state,
           zip: formData.zip,
           // ip_address: clientIP, // Send client IP from frontend
-          id_address: "3.209.172.72",
+          ip_address: "3.209.172.72",
           redirect_url: window.location.origin + '/payment-success',
           order_id: `ORD-${Date.now()}`
         })
@@ -213,20 +213,20 @@ export default function CheckoutPage() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: "Server error occurred" }))
-        
+
         // Handle backend validation errors with missing/empty fields
         let errorDescription = errorData.message || `Server error: ${response.status} ${response.statusText}`
-        
+
         if (errorData.empty_fields && errorData.empty_fields.length > 0) {
           const fields = errorData.empty_fields.map((field: string) => field.charAt(0).toUpperCase() + field.slice(1).toLowerCase()).join(", ")
           errorDescription = `Please fill in: ${fields}`
         }
-        
+
         if (errorData.missing_fields && errorData.missing_fields.length > 0) {
           const fields = errorData.missing_fields.map((field: string) => field.charAt(0).toUpperCase() + field.slice(1).toLowerCase()).join(", ")
           errorDescription = errorDescription + (errorDescription.includes("Please") ? ` and ${fields}` : `Missing: ${fields}`)
         }
-        
+
         toast.error("Payment Failed", {
           description: errorDescription
         });
@@ -236,23 +236,31 @@ export default function CheckoutPage() {
 
       const result = await response.json();
 
-      if (result.success && result.payment_url) {
-        toast.success("Redirecting to PayAgency Secure Terminal...")
+      if (result.status === "REDIRECT" && result.redirect_url) {
+        toast.success("Redirecting to complete payment...")
+        window.location.href = result.redirect_url;
+      } else if (result.status === "SUCCESS") {
+        toast.success("Transaction processed successfully!");
+        clearCart();
+        router.push('/payment-success');
+      } else if (result.success && result.payment_url) {
+        // Compatibility fallback
+        toast.success("Redirecting to secure payment gateway...")
         window.location.href = result.payment_url;
       } else {
         // Handle backend validation errors
         let errorDescription = result.message || "Payment initialization failed. Please try again."
-        
+
         if (result.empty_fields && result.empty_fields.length > 0) {
           const fields = result.empty_fields.map((field: string) => field.charAt(0).toUpperCase() + field.slice(1).toLowerCase()).join(", ")
           errorDescription = `Please fill in: ${fields}`
         }
-        
+
         if (result.missing_fields && result.missing_fields.length > 0) {
           const fields = result.missing_fields.map((field: string) => field.charAt(0).toUpperCase() + field.slice(1).toLowerCase()).join(", ")
           errorDescription = errorDescription + (errorDescription.includes("Please") ? ` and ${fields}` : `Missing: ${fields}`)
         }
-        
+
         toast.error("Payment Failed", {
           description: errorDescription
         });
@@ -260,14 +268,14 @@ export default function CheckoutPage() {
       }
     } catch (error: any) {
       console.error('Checkout error:', error);
-      
+
       let errorMessage = "Payment gateway communication failure."
       if (error.message) {
         errorMessage = error.message
       } else if (error instanceof TypeError && error.message.includes('fetch')) {
         errorMessage = "Network error. Please check your connection and try again."
       }
-      
+
       toast.error("Process Halted", {
         description: errorMessage
       });
@@ -353,10 +361,10 @@ export default function CheckoutPage() {
                       <div className="grid grid-cols-4 gap-4 md:col-span-2">
                         <div className="md:col-span-1">
                           <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">Country *</label>
-                          <select 
-                            name="country" 
-                            value={formData.country} 
-                            onChange={handleChange} 
+                          <select
+                            name="country"
+                            value={formData.country}
+                            onChange={handleChange}
                             required
                             className="h-12 w-full rounded-xl bg-background border border-border/50 px-3 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
                           >

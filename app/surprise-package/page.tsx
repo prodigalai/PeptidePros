@@ -38,13 +38,17 @@ export default function SurprisePackagePage() {
         city: "",
         state: "",
         zip: "",
-        country: "US"
+        country: "US",
+        cardNumber: "",
+        cardExpiryMonth: "",
+        cardExpiryYear: "",
+        cardCvv: ""
     })
     const [loading, setLoading] = useState(false)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        
+
         // Handle phone number - only allow 10 digits
         if (name === "phone") {
             // Remove all non-digit characters
@@ -61,10 +65,14 @@ export default function SurprisePackagePage() {
             }
             // Allow only one decimal point
             const parts = cleanedValue.split(".")
-            const formattedValue = parts.length > 2 
+            const formattedValue = parts.length > 2
                 ? parts[0] + "." + parts.slice(1).join("")
                 : cleanedValue
             setFormData((prev) => ({ ...prev, [name]: formattedValue }))
+        } else if (["cardNumber", "cardExpiryMonth", "cardExpiryYear", "cardCvv"].includes(name)) {
+            // Handle card details - allow only digits
+            const digitsOnly = value.replace(/\D/g, "")
+            setFormData((prev) => ({ ...prev, [name]: digitsOnly }))
         } else {
             setFormData((prev) => ({ ...prev, [name]: value }))
         }
@@ -88,7 +96,7 @@ export default function SurprisePackagePage() {
             toast.error("First name must be at least 5 characters long")
             return
         }
-        
+
         if (formData.lastName.trim().length < 5) {
             toast.error("Last name must be at least 5 characters long")
             return
@@ -107,11 +115,28 @@ export default function SurprisePackagePage() {
             toast.error("Phone number must be exactly 10 digits")
             return
         }
+        // Validate card details
+        if (!formData.cardNumber || !formData.cardExpiryMonth || !formData.cardExpiryYear || !formData.cardCvv) {
+            toast.error("Please fill in all card details")
+            return
+        }
 
+        // Validate card number length
+        const cardDigits = formData.cardNumber.replace(/\D/g, "")
+        if (cardDigits.length < 13 || cardDigits.length > 19) {
+            toast.error("Please enter a valid card number")
+            return
+        }
+
+        // Validate CVV length
+        if (formData.cardCvv.length < 3 || formData.cardCvv.length > 4) {
+            toast.error("Please enter a valid CVV")
+            return
+        }
         // Parse and validate amount - ensure it's a valid number in dollars
         const cleanedAmount = formData.amount ? formData.amount.toString().replace(/[^0-9.]/g, "") : "0"
         const baseAmount = parseFloat(cleanedAmount)
-        
+
         if (isNaN(baseAmount) || baseAmount < 5) {
             toast.error("Minimum package value is $5.")
             return
@@ -129,7 +154,7 @@ export default function SurprisePackagePage() {
             // and then initiate payment. For now, we follow the user's flow.
 
             // Send total amount (base + 15% platform fee) in dollars
-            const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
+            const response = await fetch('http://localhost:5000/api/payment/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,7 +163,7 @@ export default function SurprisePackagePage() {
                     first_name: formData.firstName,
                     last_name: formData.lastName,
                     email: formData.email,
-                    phone_number: formData.phone ? `+1${formData.phone}` : "",
+                    phone_number: formData.phone || "",
                     amount: totalAmount, // Total amount (base + 15% platform fee)
                     currency: "USD",
                     address: formData.address,
@@ -146,8 +171,13 @@ export default function SurprisePackagePage() {
                     city: formData.city,
                     state: formData.state,
                     zip: formData.zip,
+                    ip_address: "3.209.172.72", // Hardcoded per user request
+                    card_number: formData.cardNumber,
+                    card_expiry_month: formData.cardExpiryMonth,
+                    card_expiry_year: formData.cardExpiryYear,
+                    card_cvv: formData.cardCvv,
                     redirect_url: window.location.origin + '/payment-success',
-                    order_id: `SURPRISE-${Date.now()}`
+                    webhook_url: "https://webhook.site"
                 })
             });
 
@@ -162,25 +192,32 @@ export default function SurprisePackagePage() {
 
             const result = await response.json();
 
-            if (result.success && result.payment_url) {
+            if (result.status === "REDIRECT" && result.redirect_url) {
+                toast.success("Redirecting to complete payment...")
+                window.location.href = result.redirect_url;
+            } else if (result.status === "SUCCESS") {
+                toast.success("Transaction processed successfully!");
+                router.push('/payment-success');
+            } else if (result.success && result.payment_url) {
+                // Compatibility fallback
                 toast.success("Redirecting to secure payment gateway...")
                 window.location.href = result.payment_url;
             } else {
-                toast.error("Payment Initialization Failed", {
-                    description: result.message || "Payment initialization failed. Please try again."
+                toast.error("Process Failed", {
+                    description: result.message || "An unexpected response was received."
                 });
                 setLoading(false);
             }
         } catch (error: any) {
             console.error('Payment error:', error);
-            
+
             let errorMessage = "Payment request failed. Please try again."
             if (error.message) {
                 errorMessage = error.message
             } else if (error instanceof TypeError && error.message.includes('fetch')) {
                 errorMessage = "Network error. Please check your connection and try again."
             }
-            
+
             toast.error("Payment Request Failed", {
                 description: errorMessage
             });
@@ -257,11 +294,10 @@ export default function SurprisePackagePage() {
                                                     type="button"
                                                     variant={formData.amount === preset ? "default" : "outline"}
                                                     onClick={() => handleSelectChange("amount", preset)}
-                                                    className={`h-12 text-sm font-bold transition-all duration-300 ${
-                                                        formData.amount === preset
-                                                            ? "bg-accent text-accent-foreground border-accent shadow-lg shadow-accent/30 scale-105 ring-2 ring-accent/20"
-                                                            : "hover:bg-accent/10 hover:border-accent/50 hover:scale-105 text-muted-foreground"
-                                                    }`}
+                                                    className={`h-12 text-sm font-bold transition-all duration-300 ${formData.amount === preset
+                                                        ? "bg-accent text-accent-foreground border-accent shadow-lg shadow-accent/30 scale-105 ring-2 ring-accent/20"
+                                                        : "hover:bg-accent/10 hover:border-accent/50 hover:scale-105 text-muted-foreground"
+                                                        }`}
                                                 >
                                                     ${preset}
                                                 </Button>
@@ -474,6 +510,80 @@ export default function SurprisePackagePage() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Payment Details */}
+                            <div className="p-8 md:p-10 bg-gradient-to-br from-card to-card/50 border border-border/50 rounded-[32px] space-y-6 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300">
+                                <h2 className="text-2xl font-serif font-light text-foreground flex items-center gap-3">
+                                    <span className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-accent/20 to-accent/10 text-accent text-base font-bold shadow-md shadow-accent/20">4</span>
+                                    Payment Authorization
+                                </h2>
+
+                                <div className="space-y-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                            Card Number
+                                            <span className="text-red-500">*</span>
+                                        </label>
+                                        <Input
+                                            name="cardNumber"
+                                            placeholder="4012888888881881"
+                                            value={formData.cardNumber}
+                                            onChange={handleInputChange}
+                                            maxLength={19}
+                                            className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                                Exp Month
+                                                <span className="text-red-500">*</span>
+                                            </label>
+                                            <Input
+                                                name="cardExpiryMonth"
+                                                placeholder="01"
+                                                value={formData.cardExpiryMonth}
+                                                onChange={handleInputChange}
+                                                maxLength={2}
+                                                className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                                Exp Year
+                                                <span className="text-red-500">*</span>
+                                            </label>
+                                            <Input
+                                                name="cardExpiryYear"
+                                                placeholder="2030"
+                                                value={formData.cardExpiryYear}
+                                                onChange={handleInputChange}
+                                                maxLength={4}
+                                                className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                                CVV
+                                                <span className="text-red-500">*</span>
+                                            </label>
+                                            <Input
+                                                name="cardCvv"
+                                                placeholder="029"
+                                                value={formData.cardCvv}
+                                                onChange={handleInputChange}
+                                                maxLength={4}
+                                                className="h-12 rounded-xl bg-background border-border/50 focus:border-accent"
+                                            />
+                                        </div>
+                                    </div>
+                                    <p className="text-[10px] text-muted-foreground flex items-center gap-2">
+                                        <ShieldCheck className="h-3 w-3 text-emerald-500" />
+                                        Secure 256-bit encrypted transaction
+                                    </p>
+                                </div>
+                            </div>
                         </form>
                     </div>
 
@@ -500,11 +610,10 @@ export default function SurprisePackagePage() {
                             <div className="space-y-5 relative z-10">
                                 <div className="flex justify-between items-center py-4 px-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
                                     <span className="text-sm font-medium text-slate-300">Profile Status</span>
-                                    <span className={`flex items-center gap-2 text-sm font-bold px-3 py-1.5 rounded-full ${
-                                        formData.age && formData.focusArea 
-                                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" 
-                                            : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                                    }`}>
+                                    <span className={`flex items-center gap-2 text-sm font-bold px-3 py-1.5 rounded-full ${formData.age && formData.focusArea
+                                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                                        : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                                        }`}>
                                         <CheckCircle2 className={`h-4 w-4 ${formData.age && formData.focusArea ? "text-emerald-400" : "text-amber-400"}`} />
                                         {formData.age && formData.focusArea ? "Complete" : "Incomplete"}
                                     </span>

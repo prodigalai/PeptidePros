@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-    import { useRouter } from "next/navigation"
-    import { Button } from "@/components/ui/button"
-    import { Input } from "@/components/ui/input"
-    import { toast } from "sonner"
-    import { Lock, ShieldCheck } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
+import { Lock, ShieldCheck } from "lucide-react"
 
 export default function DashboardLoginPage() {
     const router = useRouter()
@@ -14,40 +14,40 @@ export default function DashboardLoginPage() {
     const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e: React.FormEvent) => {
-            e.preventDefault()
-            setLoading(true)
+        e.preventDefault()
+        setLoading(true)
 
-            try {
-                // Authenticate via backend API
-                const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include', // Important for session cookies
-                    body: JSON.stringify({ username, password })
-                })
+        try {
+            // Authenticate via backend API
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include', // Important for session cookies
+                body: JSON.stringify({ username, password })
+            })
 
-                const data = await response.json()
+            const data = await response.json()
 
-                if (data.success) {
-                    // Store in sessionStorage
-                    sessionStorage.setItem("dashboard_auth", "true")
-                    sessionStorage.setItem("dashboard_user", data.user?.username || username)
-                    sessionStorage.setItem("dashboard_role", data.user?.role || "")
-                    sessionStorage.setItem("session_id", data.session_id || "")
-                    toast.success(data.message || "Login successful")
-                    router.push("/dashboard")
-                } else {
-                    toast.error(data.message || "Invalid username or password")
-                    setLoading(false)
-                }
-            } catch (error) {
-                console.error("Login error:", error)
-                toast.error("Login failed. Please try again.")
+            if (data.success) {
+                // Store in sessionStorage
+                sessionStorage.setItem("dashboard_auth", "true")
+                sessionStorage.setItem("dashboard_user", data.user?.username || username)
+                sessionStorage.setItem("dashboard_role", data.user?.role || "")
+                sessionStorage.setItem("session_id", data.session_id || "")
+                toast.success(data.message || "Login successful")
+                router.push("/dashboard")
+            } else {
+                toast.error(data.message || "Invalid username or password")
                 setLoading(false)
             }
+        } catch (error) {
+            console.error("Login error:", error)
+            toast.error("Login failed. Please try again.")
+            setLoading(false)
         }
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
