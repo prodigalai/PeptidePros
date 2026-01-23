@@ -89,9 +89,9 @@ export default function CheckoutPage() {
       const limitedDigits = digitsOnly.slice(0, 10)
       setFormData((prev) => ({ ...prev, [name]: limitedDigits }))
     } else if (name === "zip") {
-      // Handle ZIP - only allow up to 6 digits
+      // Handle ZIP - only allow up to 5 digits
       const digitsOnly = value.replace(/\D/g, "")
-      const limitedDigits = digitsOnly.slice(0, 6)
+      const limitedDigits = digitsOnly.slice(0, 5)
       setFormData((prev) => ({ ...prev, [name]: limitedDigits }))
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
@@ -129,9 +129,9 @@ export default function CheckoutPage() {
         return
       }
 
-      // Validate ZIP code (must be exactly 6 digits)
-      if (formData.zip.length !== 6) {
-        toast.error("ZIP Code must be exactly 6 digits")
+      // Validate ZIP code (must be exactly 5 digits)
+      if (formData.zip.length !== 5) {
+        toast.error("ZIP Code must be exactly 5 digits")
         return
       }
 
@@ -220,7 +220,7 @@ export default function CheckoutPage() {
           last_name: formData.lastName,
           email: formData.email,
           phone_number: formData.phone ? `+1${formData.phone}` : "",
-          amount: totalValue, // Amount in dollars (as entered)
+          amount: Math.floor(totalValue), // Send lowest integer (truncate decimals)
           currency: "USD",
           address: formData.address,
           country: formData.country,
@@ -517,7 +517,7 @@ export default function CheckoutPage() {
                         </div>
                         <div className="md:col-span-1">
                           <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">ZIP/Postal Code *</label>
-                          <Input name="zip" value={formData.zip} onChange={handleChange} placeholder="110001" required maxLength={6} className="h-12 rounded-xl bg-background border-border/50 focus:border-accent" />
+                          <Input name="zip" value={formData.zip} onChange={handleChange} placeholder="10001" required maxLength={5} className="h-12 rounded-xl bg-background border-border/50 focus:border-accent" />
                         </div>
                       </div>
                     </div>
