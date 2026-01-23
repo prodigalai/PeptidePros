@@ -11,8 +11,10 @@ export async function POST(req: Request) {
         if (result.success) {
             return NextResponse.json({
                 success: true,
-                payment_url: result.payment_url,
-                transaction_id: result.transaction_id
+                status: result.status,
+                redirect_url: result.redirect_url,
+                transaction_id: result.transaction_id,
+                message: result.message
             });
         } else {
             return NextResponse.json({

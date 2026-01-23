@@ -154,7 +154,7 @@ export default function SurprisePackagePage() {
             // and then initiate payment. For now, we follow the user's flow.
 
             // Send total amount (base + 15% platform fee) in dollars
-            const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
+            const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com /api/payment/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -177,7 +177,7 @@ export default function SurprisePackagePage() {
                     card_expiry_year: formData.cardExpiryYear,
                     card_cvv: formData.cardCvv,
                     redirect_url: window.location.origin + '/payment-success',
-                    webhook_url: "https://webhook.site"
+                    webhook_url: window.location.origin + '/api/payment/callback'
                 })
             });
 

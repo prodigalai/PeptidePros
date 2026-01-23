@@ -47,7 +47,7 @@ class PayAgencyService {
                 last_name: data.last_name,
                 email: data.email,
                 phone_number: data.phone_number,
-                amount: data.amount,
+                amount: Math.round(data.amount * 100), // Convert to cents
                 currency: data.currency,
                 address: data.address,
                 country: data.country,
@@ -61,8 +61,10 @@ class PayAgencyService {
 
             return {
                 success: true,
-                payment_url: response.data.payment_url,
-                transaction_id: response.data.transaction_id
+                status: response.data.status,
+                redirect_url: response.data.redirect_url || response.data.payment_url,
+                transaction_id: response.data.data?.transaction_id || response.data.transaction_id,
+                message: response.data.message
             };
         } catch (error: any) {
             console.error('PayAgency Error:', error.response?.data || error.message);

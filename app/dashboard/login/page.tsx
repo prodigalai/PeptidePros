@@ -19,7 +19,7 @@ export default function DashboardLoginPage() {
 
         try {
             // Authenticate via backend API
-            const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/login', {
+            const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com /login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
