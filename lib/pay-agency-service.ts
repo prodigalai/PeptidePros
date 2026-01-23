@@ -47,7 +47,7 @@ class PayAgencyService {
                 last_name: data.last_name,
                 email: data.email,
                 phone_number: data.phone_number,
-                amount: Math.round(data.amount * 100), // Convert to cents
+                amount: data.amount,
                 currency: data.currency,
                 address: data.address,
                 country: data.country,

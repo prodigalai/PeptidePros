@@ -187,7 +187,7 @@ export default function CheckoutPage() {
       // Ensure total is a valid number - send as-is in dollars
       const totalValue = typeof total === 'number' && !isNaN(total) ? total : 0
 
-      const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com /api/payment/create', {
+      const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
