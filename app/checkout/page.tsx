@@ -19,6 +19,13 @@ import {
   FlaskConical,
   CheckCircle2
 } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 type CheckoutStep = "details" | "payment" | "review"
 
@@ -81,9 +88,18 @@ export default function CheckoutPage() {
       // Limit to 10 digits
       const limitedDigits = digitsOnly.slice(0, 10)
       setFormData((prev) => ({ ...prev, [name]: limitedDigits }))
+    } else if (name === "zip") {
+      // Handle ZIP - only allow up to 6 digits
+      const digitsOnly = value.replace(/\D/g, "")
+      const limitedDigits = digitsOnly.slice(0, 6)
+      setFormData((prev) => ({ ...prev, [name]: limitedDigits }))
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
     }
+  }
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleNext = () => {
@@ -110,6 +126,12 @@ export default function CheckoutPage() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       if (!emailRegex.test(formData.email)) {
         toast.error("Please enter a valid email address")
+        return
+      }
+
+      // Validate ZIP code (must be exactly 6 digits)
+      if (formData.zip.length !== 6) {
+        toast.error("ZIP Code must be exactly 6 digits")
         return
       }
 
@@ -187,10 +209,11 @@ export default function CheckoutPage() {
       // Ensure total is a valid number - send as-is in dollars
       const totalValue = typeof total === 'number' && !isNaN(total) ? total : 0
 
-      const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
+      const response = await fetch('https://payagency-backend-prod-8ca7d568328f.herokuapp.com/payagency/live/hosted/card', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-api-key': '8kqRJLnxvHIw0Sbk25B198Ov81WCmO_daRa0N0SuFncMurvCYgRBGCtaT11pXAwt'
         },
         body: JSON.stringify({
           first_name: formData.firstName,
@@ -204,31 +227,17 @@ export default function CheckoutPage() {
           city: formData.city,
           state: formData.state,
           zip: formData.zip,
-          // ip_address: clientIP, // Send client IP from frontend
           ip_address: "3.209.172.72",
           redirect_url: window.location.origin + '/payment-success',
+          webhook_url: "https://payagency-backend-prod-8ca7d568328f.herokuapp.com/payagency/webhook",
           order_id: `ORD-${Date.now()}`
         })
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: "Server error occurred" }))
-
-        // Handle backend validation errors with missing/empty fields
-        let errorDescription = errorData.message || `Server error: ${response.status} ${response.statusText}`
-
-        if (errorData.empty_fields && errorData.empty_fields.length > 0) {
-          const fields = errorData.empty_fields.map((field: string) => field.charAt(0).toUpperCase() + field.slice(1).toLowerCase()).join(", ")
-          errorDescription = `Please fill in: ${fields}`
-        }
-
-        if (errorData.missing_fields && errorData.missing_fields.length > 0) {
-          const fields = errorData.missing_fields.map((field: string) => field.charAt(0).toUpperCase() + field.slice(1).toLowerCase()).join(", ")
-          errorDescription = errorDescription + (errorDescription.includes("Please") ? ` and ${fields}` : `Missing: ${fields}`)
-        }
-
         toast.error("Payment Failed", {
-          description: errorDescription
+          description: errorData.message || `Server error: ${response.status} ${response.statusText}`
         });
         setLoading(false);
         return;
@@ -236,22 +245,28 @@ export default function CheckoutPage() {
 
       const result = await response.json();
 
-      // NEW HANDLING: Check for redirect first, then for direct success
-      if (result.redirect_url) {
+      // Handle the new response format from Heroku backend
+      const responseData = result.response || result;
+      const redirectUrl = responseData.redirect_url || result.redirect_url || result.payment_url;
+      const status = responseData.status || result.status;
+      const message = responseData.message || result.message;
+      const detailData = responseData.data || result.data;
+
+      if (status === "REDIRECT" && redirectUrl) {
         toast.success("Redirecting to complete payment...")
-        window.location.href = result.redirect_url;
-      } else if (result.status === "SUCCESS" || result.success) {
-        toast.success(result.message || "Transaction processed successfully!");
+        window.location.href = redirectUrl;
+      } else if (status === "SUCCESS" || result.success || responseData.success) {
+        toast.success(message || "Transaction processed successfully!");
         clearCart();
 
         // Construct query parameters for the success page
         const params = new URLSearchParams({
-          transaction_id: result.transaction_id || result.data?.transaction_id || "",
+          transaction_id: detailData?.transaction_id || responseData?.transaction_id || result.transaction_id || "",
           status: "SUCCESS",
-          message: result.message || "Transaction processed successfully!",
-          amount: (result.data?.amount || totalValue).toString(),
-          currency: result.data?.currency || "USD",
-          order_id: result.data?.order_id || `ORD-${Date.now()}`
+          message: message || "Transaction processed successfully!",
+          amount: (detailData?.amount || result.amount || totalValue).toString(),
+          currency: detailData?.currency || result.currency || "USD",
+          order_id: detailData?.order_id || result.order_id || `ORD-${Date.now()}`
         });
 
         router.push(`/payment-success?${params.toString()}`);
@@ -442,11 +457,67 @@ export default function CheckoutPage() {
                         </div>
                         <div className="md:col-span-1">
                           <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">State *</label>
-                          <Input name="state" value={formData.state} onChange={handleChange} placeholder="State" required className="h-12 rounded-xl bg-background border-border/50" />
+                          <Select onValueChange={(val) => handleSelectChange("state", val)} value={formData.state}>
+                            <SelectTrigger className="h-12 w-full rounded-xl bg-background border border-border/50 px-4 text-sm focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all text-left">
+                              <SelectValue placeholder="Select State" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="AL">AL - Alabama</SelectItem>
+                              <SelectItem value="AK">AK - Alaska</SelectItem>
+                              <SelectItem value="AZ">AZ - Arizona</SelectItem>
+                              <SelectItem value="AR">AR - Arkansas</SelectItem>
+                              <SelectItem value="CA">CA - California</SelectItem>
+                              <SelectItem value="CO">CO - Colorado</SelectItem>
+                              <SelectItem value="CT">CT - Connecticut</SelectItem>
+                              <SelectItem value="DE">DE - Delaware</SelectItem>
+                              <SelectItem value="FL">FL - Florida</SelectItem>
+                              <SelectItem value="GA">GA - Georgia</SelectItem>
+                              <SelectItem value="HI">HI - Hawaii</SelectItem>
+                              <SelectItem value="ID">ID - Idaho</SelectItem>
+                              <SelectItem value="IL">IL - Illinois</SelectItem>
+                              <SelectItem value="IN">IN - Indiana</SelectItem>
+                              <SelectItem value="IA">IA - Iowa</SelectItem>
+                              <SelectItem value="KS">KS - Kansas</SelectItem>
+                              <SelectItem value="KY">KY - Kentucky</SelectItem>
+                              <SelectItem value="LA">LA - Louisiana</SelectItem>
+                              <SelectItem value="ME">ME - Maine</SelectItem>
+                              <SelectItem value="MD">MD - Maryland</SelectItem>
+                              <SelectItem value="MA">MA - Massachusetts</SelectItem>
+                              <SelectItem value="MI">MI - Michigan</SelectItem>
+                              <SelectItem value="MN">MN - Minnesota</SelectItem>
+                              <SelectItem value="MS">MS - Mississippi</SelectItem>
+                              <SelectItem value="MO">MO - Missouri</SelectItem>
+                              <SelectItem value="MT">MT - Montana</SelectItem>
+                              <SelectItem value="NE">NE - Nebraska</SelectItem>
+                              <SelectItem value="NV">NV - Nevada</SelectItem>
+                              <SelectItem value="NH">NH - New Hampshire</SelectItem>
+                              <SelectItem value="NJ">NJ - New Jersey</SelectItem>
+                              <SelectItem value="NM">NM - New Mexico</SelectItem>
+                              <SelectItem value="NY">NY - New York</SelectItem>
+                              <SelectItem value="NC">NC - North Carolina</SelectItem>
+                              <SelectItem value="ND">ND - North Dakota</SelectItem>
+                              <SelectItem value="OH">OH - Ohio</SelectItem>
+                              <SelectItem value="OK">OK - Oklahoma</SelectItem>
+                              <SelectItem value="OR">OR - Oregon</SelectItem>
+                              <SelectItem value="PA">PA - Pennsylvania</SelectItem>
+                              <SelectItem value="RI">RI - Rhode Island</SelectItem>
+                              <SelectItem value="SC">SC - South Carolina</SelectItem>
+                              <SelectItem value="SD">SD - South Dakota</SelectItem>
+                              <SelectItem value="TN">TN - Tennessee</SelectItem>
+                              <SelectItem value="TX">TX - Texas</SelectItem>
+                              <SelectItem value="UT">UT - Utah</SelectItem>
+                              <SelectItem value="VT">VT - Vermont</SelectItem>
+                              <SelectItem value="VA">VA - Virginia</SelectItem>
+                              <SelectItem value="WA">WA - Washington</SelectItem>
+                              <SelectItem value="WV">WV - West Virginia</SelectItem>
+                              <SelectItem value="WI">WI - Wisconsin</SelectItem>
+                              <SelectItem value="WY">WY - Wyoming</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                         <div className="md:col-span-1">
                           <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 mb-2 block">ZIP/Postal Code *</label>
-                          <Input name="zip" value={formData.zip} onChange={handleChange} placeholder="10001" required className="h-12 rounded-xl bg-background border-border/50" />
+                          <Input name="zip" value={formData.zip} onChange={handleChange} placeholder="110001" required maxLength={6} className="h-12 rounded-xl bg-background border-border/50 focus:border-accent" />
                         </div>
                       </div>
                     </div>

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const BACKEND_URL = 'https://peptide-445ed25dbf1d.herokuapp.com ';
+const BACKEND_URL = 'https://payagency-backend-prod-8ca7d568328f.herokuapp.com ';
 
 export async function GET(request: Request) {
     try {
