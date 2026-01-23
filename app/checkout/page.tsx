@@ -236,17 +236,25 @@ export default function CheckoutPage() {
 
       const result = await response.json();
 
-      if (result.status === "REDIRECT" && result.redirect_url) {
+      // NEW HANDLING: Check for redirect first, then for direct success
+      if (result.redirect_url) {
         toast.success("Redirecting to complete payment...")
         window.location.href = result.redirect_url;
-      } else if (result.status === "SUCCESS") {
-        toast.success("Transaction processed successfully!");
+      } else if (result.status === "SUCCESS" || result.success) {
+        toast.success(result.message || "Transaction processed successfully!");
         clearCart();
-        router.push('/payment-success');
-      } else if (result.success && result.payment_url) {
-        // Compatibility fallback
-        toast.success("Redirecting to secure payment gateway...")
-        window.location.href = result.payment_url;
+
+        // Construct query parameters for the success page
+        const params = new URLSearchParams({
+          transaction_id: result.transaction_id || result.data?.transaction_id || "",
+          status: "SUCCESS",
+          message: result.message || "Transaction processed successfully!",
+          amount: (result.data?.amount || totalValue).toString(),
+          currency: result.data?.currency || "USD",
+          order_id: result.data?.order_id || `ORD-${Date.now()}`
+        });
+
+        router.push(`/payment-success?${params.toString()}`);
       } else {
         // Handle backend validation errors
         let errorDescription = result.message || "Payment initialization failed. Please try again."

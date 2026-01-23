@@ -39,10 +39,10 @@ class PayAgencyService {
 
     async createPayment(data: any) {
         try {
-            // According to PayAgency docs (implied by user request), 
-            // we send payload directly or encrypted. User says encryption is "correct",
-            // so we assume the backend handles it or we send as is.
+            // According to PayAgency docs, we send the payload to the creation endpoint.
+            // We ensure card details and IP address are included if provided.
             const response = await this.api.post('/hosted/create', {
+                ...data, // Pass all data including card info if present
                 first_name: data.first_name,
                 last_name: data.last_name,
                 email: data.email,
@@ -56,15 +56,25 @@ class PayAgencyService {
                 zip: data.zip,
                 redirect_url: data.redirect_url,
                 webhook_url: data.webhook_url,
-                order_id: data.order_id
+                order_id: data.order_id,
+                ip_address: data.ip_address,
+                // Include card details explicitly for 2D transactions
+                card_number: data.card_number,
+                card_expiry_month: data.card_expiry_month,
+                card_expiry_year: data.card_expiry_year,
+                card_cvv: data.card_cvv
             });
 
+            const responseData = response.data;
+            const success = responseData.success || responseData.status === "SUCCESS";
+            const redirectUrl = responseData.redirect_url || responseData.payment_url || responseData.data?.redirect_url;
+
             return {
-                success: true,
-                status: response.data.status,
-                redirect_url: response.data.redirect_url || response.data.payment_url,
-                transaction_id: response.data.data?.transaction_id || response.data.transaction_id,
-                message: response.data.message
+                success,
+                status: responseData.status || (success ? "SUCCESS" : "FAILED"),
+                redirect_url: redirectUrl,
+                transaction_id: responseData.data?.transaction_id || responseData.transaction_id || responseData.data?.order_id,
+                message: responseData.message || (success ? "Transaction processed successfully" : "Payment failed")
             };
         } catch (error: any) {
             console.error('PayAgency Error:', error.response?.data || error.message);

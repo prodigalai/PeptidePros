@@ -150,9 +150,6 @@ export default function SurprisePackagePage() {
         setLoading(true)
 
         try {
-            // In a real app, you'd probably save the order to your DB first
-            // and then initiate payment. For now, we follow the user's flow.
-
             // Send total amount (base + 15% platform fee) in dollars
             const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
                 method: 'POST',
@@ -192,16 +189,24 @@ export default function SurprisePackagePage() {
 
             const result = await response.json();
 
-            if (result.status === "REDIRECT" && result.redirect_url) {
+            // NEW HANDLING: Check for redirect first, then for direct success
+            if (result.redirect_url) {
                 toast.success("Redirecting to complete payment...")
                 window.location.href = result.redirect_url;
-            } else if (result.status === "SUCCESS") {
-                toast.success("Transaction processed successfully!");
-                router.push('/payment-success');
-            } else if (result.success && result.payment_url) {
-                // Compatibility fallback
-                toast.success("Redirecting to secure payment gateway...")
-                window.location.href = result.payment_url;
+            } else if (result.status === "SUCCESS" || result.success) {
+                toast.success(result.message || "Transaction processed successfully!");
+
+                // Construct query parameters for the success page
+                const params = new URLSearchParams({
+                    transaction_id: result.transaction_id || result.data?.transaction_id || "",
+                    status: "SUCCESS",
+                    message: result.message || "Transaction processed successfully!",
+                    amount: (result.data?.amount || totalAmount).toString(),
+                    currency: result.data?.currency || "USD",
+                    order_id: result.data?.order_id || `ORD-${Date.now()}`
+                });
+
+                router.push(`/payment-success?${params.toString()}`);
             } else {
                 toast.error("Process Failed", {
                     description: result.message || "An unexpected response was received."
