@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = 'https://peptide-445ed25dbf1d.herokuapp.com';
 
 export async function GET(request: Request) {
     try {

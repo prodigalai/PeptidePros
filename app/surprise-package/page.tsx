@@ -154,7 +154,7 @@ export default function SurprisePackagePage() {
             // and then initiate payment. For now, we follow the user's flow.
 
             // Send total amount (base + 15% platform fee) in dollars
-            const response = await fetch('http://localhost:5000/api/payment/create', {
+            const response = await fetch('https://peptide-445ed25dbf1d.herokuapp.com/api/payment/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
